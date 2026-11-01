@@ -1,179 +1,162 @@
 <title>保健だより作成チェック</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
 <style>
 :root{
-  --bg:#F5F7F3; --surface:#FFFFFF; --ink:#1B2425; --muted:#5D6A67; --faint:#8C9895; --line:#DCE2DB;
-  --accent:#0D7A69; --accent-soft:#E2F1EC;
-  --mark:#FCE7A6; --mark-ink:#5A4300; --over:#F6D3C7; --over-ink:#7A2E14; --tech:#DCE6F5; --tech-ink:#23406B;
-  --serif:"BIZ UDPMincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --bg:#EEECE7; --paper:#FFFFFF; --panel:#FAF9F6; --ink:#262626; --muted:#5E5E5E; --faint:#929292; --line:#D3D0C9;
+  --accent:#2B5D8A; --accent-ink:#FFFFFF;
+  --need:#C4472D; --tech:#2B5D8A; --ok:#2E7A4C;
+  --hl-need:#FBE3DC; --hl-tech:#E1EAF3;
   --sans:"BIZ UDPGothic","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --paperfont:"Zen Kaku Gothic New","BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#111716; --surface:#192120; --ink:#E6ECE9; --muted:#9BA9A5; --faint:#6E7C78; --line:#2B3533;
-    --accent:#45B8A2; --accent-soft:#1D3530;
-    --mark:#5A4A16; --mark-ink:#FCE7A6; --over:#5E2C1E; --over-ink:#F8C9B8; --tech:#22344F; --tech-ink:#C9DAF4;
+    --bg:#1E1E1D; --paper:#FFFFFF; --panel:#262625; --ink:#E5E5E3; --muted:#ABABA8; --faint:#7D7D7A; --line:#3C3C3A;
+    --accent:#8DB6DD; --accent-ink:#1E1E1D; --need:#EE8F78; --tech:#8DB6DD; --ok:#78C796;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#111716; --surface:#192120; --ink:#E6ECE9; --muted:#9BA9A5; --faint:#6E7C78; --line:#2B3533;
-  --accent:#45B8A2; --accent-soft:#1D3530;
-  --mark:#5A4A16; --mark-ink:#FCE7A6; --over:#5E2C1E; --over-ink:#F8C9B8; --tech:#22344F; --tech-ink:#C9DAF4;
+  --bg:#1E1E1D; --paper:#FFFFFF; --panel:#262625; --ink:#E5E5E3; --muted:#ABABA8; --faint:#7D7D7A; --line:#3C3C3A;
+  --accent:#8DB6DD; --accent-ink:#1E1E1D; --need:#EE8F78; --tech:#8DB6DD; --ok:#78C796;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.75;padding-inline:20px;padding-block:28px 64px}
-.wrap{max-width:1120px;margin:0 auto;display:grid;gap:20px}
-h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;text-wrap:balance;line-height:1.4}
-h1{font-size:clamp(24px,3.6vw,34px)}
-h2{font-size:18px}
-h3{font-size:15px;font-family:var(--sans)}
-p{margin:0}
-rt{font-family:var(--sans);font-size:.45em;color:var(--accent)}
-.lede{color:var(--muted);max-width:70ch}
-.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
-@media (max-width:860px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:12px}
-.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
-.field{display:grid;gap:4px}
-.field label{font-size:12.5px;color:var(--muted)}
-select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px}
-select{padding:6px 8px;font-size:14px}
-textarea{width:100%;min-height:340px;padding:12px;line-height:1.8;font-size:15px;resize:vertical}
-select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.btns{display:flex;flex-wrap:wrap;gap:8px}
-button.b{font:inherit;font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
-button.b.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.note{font-size:12.5px;color:var(--muted)}
-.sticky{position:sticky;top:12px}
-@media (max-width:860px){.sticky{position:static}}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
-.tabs button{font:inherit;font-size:13.5px;padding:8px 12px;border:0;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
-.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
-.preview{white-space:pre-wrap;line-height:2.1;font-size:15px;max-height:420px;overflow:auto;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
-mark{border-radius:3px;padding:0 1px}
-mark.k{background:var(--mark);color:var(--mark-ink)}
-mark.o{background:var(--over);color:var(--over-ink)}
-mark.t{background:var(--tech);color:var(--tech-ink)}
-mark.s{background:none;color:inherit;text-decoration:underline wavy var(--faint);text-underline-offset:4px}
-.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted)}
-.legend mark{font-size:12px}
-.meters{display:grid;gap:14px}
-.meter{display:grid;gap:4px}
-.meter .top{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
-.meter .top b{font-family:var(--mono);font-weight:500}
-.bar{position:relative;height:18px;border-radius:4px;background:var(--bg);border:1px solid var(--line)}
-.bar .iqr{position:absolute;top:3px;bottom:3px;background:var(--accent-soft);border-radius:2px}
-.bar .mid{position:absolute;top:2px;bottom:2px;width:2px;background:var(--faint)}
-.bar .you{position:absolute;top:-4px;width:12px;height:24px;margin-left:-6px;border-radius:3px;background:var(--accent);border:2px solid var(--surface)}
-.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);font-family:var(--mono)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-size:13px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:var(--bg)}
-.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
-.kl{display:flex;flex-wrap:wrap;gap:6px}
-.kl span{font-size:15px;padding:2px 7px;border-radius:5px;background:var(--mark);color:var(--mark-ink)}
-.kl span.o{background:var(--over);color:var(--over-ink)}
-.kl span small{font-family:var(--mono);font-size:10.5px;margin-left:3px;opacity:.8}
-table.t{border-collapse:collapse;width:100%;font-size:13.5px}
-table.t th,table.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
-table.t th{font-size:12px;color:var(--muted);font-weight:700}
-table.t td.n{text-align:right;font-family:var(--mono)}
-.pill{display:inline-block;font-size:11.5px;padding:0 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:700}
-.pill.g{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
-.callout{border-left:3px solid var(--accent);padding:4px 0 4px 12px;font-size:14px}
-.empty{color:var(--faint);font-size:13.5px}
-footer{font-size:12px;color:var(--muted);display:grid;gap:4px;border-top:1px solid var(--line);padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.7}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* 上の帯 */
+.bar{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1480px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.bar h1{font-size:15px;margin:0;font-weight:700;white-space:nowrap}
+.bar .set{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px}
+.bar label{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.bar select{font-size:13px;padding:3px 4px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:#262626}
+.bar .sp{flex:1}
+.btn{border:1px solid var(--line);background:var(--paper);color:#262626;border-radius:3px;padding:5px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--faint)}
+.btn.main{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* 3列 */
+.work{max-width:1480px;margin:0 auto;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) 320px;gap:16px;align-items:start}
+@media (max-width:1240px){.work{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)} .checks{grid-column:1/-1}}
+@media (max-width:820px){.work{grid-template-columns:minmax(0,1fr)} .checks{grid-column:auto}}
+.colh{font-size:12px;color:var(--muted);margin:0 0 6px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+
+/* 入力 */
+.edit{display:grid;gap:8px}
+.edit input,.edit textarea{width:100%;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:#262626;padding:7px 9px}
+.edit .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.edit textarea{min-height:520px;line-height:1.9;resize:vertical;font-size:15px}
+.hint{font-size:12px;color:var(--muted)}
+
+/* 紙面 */
+.sheetwrap{position:sticky;top:58px}
+@media (max-width:820px){.sheetwrap{position:static}}
+.sheet{background:var(--paper);color:#222;box-shadow:0 1px 2px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.06);aspect-ratio:210/297;overflow:auto;padding:7% 8%;font-family:var(--paperfont);font-size:14px;line-height:2.1}
+.sheet .ttl{font-size:26px;font-weight:700;text-align:center;line-height:1.6;border-bottom:3px double #444;padding-bottom:4px}
+.sheet .meta{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#555;margin:6px 0 14px;line-height:1.6}
+.sheet .hd{font-weight:700;font-size:16px;margin-top:10px;border-left:5px solid #6B8FB3;padding-left:8px;line-height:1.8}
+.sheet p{margin:0}
+.sheet .blank{height:.9em}
+.sheet rt{font-size:.5em;color:#333;font-weight:400}
+.sheet.marks .need{background:var(--hl-need);box-shadow:inset 0 -2px 0 #C4472D}
+.sheet.marks .tech{text-decoration:underline 2px #2B5D8A;text-underline-offset:5px}
+.sheet.marks .long{background:linear-gradient(transparent 88%,#E3B341 88%)}
+.sheet .empty{color:#999;text-align:center;margin-top:30%}
+
+/* 確認 */
+.checks{display:grid;gap:12px}
+.ck{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:10px 12px;display:grid;gap:6px}
+.ck h2{font-size:13.5px;margin:0;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.ck h2 small{font-weight:400;color:var(--muted);font-size:12px}
+.ck p,.ck li{font-size:13px}
+.ck ul{margin:0;padding-left:1.1em;display:grid;gap:2px}
+.ck .muted{color:var(--muted)}
+.rubylist{display:grid;gap:3px;max-height:280px;overflow:auto}
+.rubylist .r{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:13px}
+.rubylist .base{font-family:var(--paperfont);font-size:15px;min-width:3em}
+.rubylist input{width:100%;padding:2px 6px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:#262626;font-size:13px}
+.rubylist input.miss{border-color:var(--need);background:#FDF0EC}
+.rubylist .c{color:var(--faint);font-size:11.5px}
+table.tp{border-collapse:collapse;width:100%;font-size:13px}
+table.tp td{padding:2px 0;border-bottom:1px dotted var(--line)}
+table.tp td.n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;width:4em}
+table.tp td.y{width:3.5em;text-align:right}
+.y-on{color:var(--ok);font-weight:700}.y-off{color:var(--faint)}
+.lv{font-size:13px}
+.lv b{font-variant-numeric:tabular-nums}
+.foot{max-width:1480px;margin:8px auto 40px;padding:0 16px;font-size:12px;color:var(--muted);display:grid;gap:2px}
+.status{font-size:12px;color:var(--muted)}
 </style>
 
-<div class="wrap">
-  <header style="display:grid;gap:8px">
-    <div style="font-size:12.5px;letter-spacing:.12em;color:var(--accent);font-weight:700">保健だよりコーパス研究 ｜ 作成支援の試作</div>
-    <h1>保健だより<ruby>作成<rt>さくせい</rt></ruby>チェック</h1>
-    <p class="lede">下書きを貼ると、対象学年で未習の漢字、専門用語、その月によく書かれる話題を示します。比べる相手は全国の保健だより <span class="num" id="n-issues"></span> 号。採点ではなく、書いている途中で確かめるための目安です。AI は使わず、決まった規則で判定します。下書きはこのページの外には送られません。</p>
-  </header>
-
-  <div class="grid">
-    <section class="panel sticky" aria-label="下書き">
-      <div class="controls">
-        <div class="field"><label for="month">発行月</label>
-          <select id="month"></select></div>
-        <div class="field"><label for="grade">読み手</label>
-          <select id="grade">
-            <option value="1">小学1年</option><option value="2">小学2年</option><option value="3" selected>小学3年</option>
-            <option value="4">小学4年</option><option value="5">小学5年</option><option value="6">小学6年</option>
-            <option value="7">中学生</option><option value="0">保護者向け（学年なし）</option>
-          </select></div>
-        <div class="field"><label for="block">地方</label>
-          <select id="block"><option value="">指定しない</option></select></div>
-      </div>
-      <textarea id="draft" aria-label="下書きの本文" spellcheck="false"></textarea>
-      <div class="btns">
-        <button class="b" id="clear" type="button">空にする</button>
-        <button class="b" id="sample" type="button">例文を入れる</button>
-      </div>
-      <p class="note" id="sample-note">いま入っているのは動作を見るための架空の例文です。自分の下書きに置き換えてください。</p>
-    </section>
-
-    <section class="panel" aria-label="チェック結果">
-      <div class="tabs" role="tablist">
-        <button role="tab" aria-selected="true" data-tab="kanji">漢字・ルビ</button>
-        <button role="tab" aria-selected="false" data-tab="read">読みやすさの位置</button>
-        <button role="tab" aria-selected="false" data-tab="topic">話題</button>
-        <button role="tab" aria-selected="false" data-tab="season">時期の目安</button>
-      </div>
-
-      <div data-pane="kanji" style="display:grid;gap:12px">
-        <div class="callout" id="kanji-summary"></div>
-        <div class="legend"><span><mark class="k">学年</mark> 対象学年より上で習う漢字（「中」は中学校で習う）</span><span><mark class="o">外</mark> 常用漢字にない漢字</span><span><mark class="t">用語</mark> 専門用語</span><span><mark class="s">長い文</mark> 60字を超える文</span></div>
-        <div class="preview" id="preview" aria-live="polite"></div>
-        <h3>ルビを振る候補（多い順）</h3>
-        <div class="kl" id="kanji-list"></div>
-        <h3>説明を添える候補（専門用語）</h3>
-        <div class="chips" id="tech-list"></div>
-      </div>
-
-      <div data-pane="read" hidden style="display:grid;gap:14px">
-        <p class="note">緑の帯が全国の保健だよりの真ん中半分（25〜75%）、灰色の線が中央値、濃い印がこの下書きです。端にあっても誤りではありません。読み手と目的に合っているかを考える材料にしてください。</p>
-        <div class="meters" id="meters"></div>
-        <div class="callout" id="ruby-note"></div>
-      </div>
-
-      <div data-pane="topic" hidden style="display:grid;gap:12px">
-        <div class="callout" id="topic-summary"></div>
-        <h3>この下書きで扱っている話題</h3>
-        <div class="chips" id="topic-found"></div>
-        <h3 id="topic-month-title">今月、全国でよく書かれている話題</h3>
-        <div style="overflow-x:auto"><table class="t" id="topic-table"></table></div>
-        <h3>構成の要素</h3>
-        <div style="overflow-x:auto"><table class="t" id="comp-table"></table></div>
-      </div>
-
-      <div data-pane="season" hidden style="display:grid;gap:12px">
-        <div class="callout">全国の保健だよりを感染症の届出と照らし合わせると、流行より先に話題にしている感染症はなく、インフルエンザは流行と同じ月、マイコプラズマやヘルパンギーナは1か月遅れで書かれていました。月刊なので、流行が始まってから次の号で書く形になりやすいためです。</div>
-        <h3>先回りするために</h3>
-        <ul style="margin:0;padding-left:1.2em;display:grid;gap:6px">
-          <li>作成前に、地域の感染症情報（都道府県の感染症情報センターの週報）で、増え始めている感染症を確かめる。</li>
-          <li>学校の欠席状況（学校等欠席者・感染症情報システム）も、地域の動きを早く知る手がかりになる。</li>
-          <li>毎年決まって流行する感染症は、流行期の1か月前の号で予防を書いておくと先回りできる。</li>
-        </ul>
-        <h3 id="season-title">この時期の主な話題（全国・地方）</h3>
-        <div style="overflow-x:auto"><table class="t" id="season-table"></table></div>
-        <p class="note" id="season-note"></p>
-      </div>
-    </section>
+<div class="bar"><div class="bar-in">
+  <h1>保健だより作成チェック</h1>
+  <div class="set">
+    <label>発行月 <select id="month"></select></label>
+    <label>読み手 <select id="grade">
+      <option value="1">小学1年</option><option value="2">小学2年</option><option value="3" selected>小学3年</option>
+      <option value="4">小学4年</option><option value="5">小学5年</option><option value="6">小学6年</option>
+      <option value="7">中学生</option><option value="0">保護者</option>
+    </select></label>
+    <label>ルビ <select id="rubymode">
+      <option value="need" selected>まだ習わない漢字</option><option value="all">すべての漢字</option><option value="none">振らない</option>
+    </select></label>
+    <label>地方 <select id="block"><option value="">全国</option></select></label>
+    <label><input type="checkbox" id="marks" checked> 確認の印</label>
   </div>
+  <span class="sp"></span>
+  <span class="status" id="status">読みの辞書を読み込み中…</span>
+  <label class="set" style="color:var(--muted);font-size:13px">Word の字体 <select id="font">
+    <option value="UD デジタル 教科書体 N-R">UD デジタル教科書体</option>
+    <option value="BIZ UDPゴシック">BIZ UDPゴシック</option>
+    <option value="游ゴシック">游ゴシック</option>
+    <option value="游明朝">游明朝</option>
+  </select></label>
+  <button class="btn main" id="docx" type="button">Word で書き出す</button>
+</div></div>
 
-  <footer>
-    <div>判定の根拠：学年別漢字配当表（2020年施行、1,026字）／話題の語彙辞書（研究で公開予定）／全国の保健だより <span id="n-issues2"></span> 号の集計値（2021〜2026年度、学校を特定できる値は含まない）。</div>
-    <div>漢字の判定は字単位です。ルビが要るかは文脈や学校の方針で決めてください。話題の判定は語が出てくるかどうかだけを見ています。</div>
-  </footer>
+<div class="work">
+  <section class="edit" aria-label="入力">
+    <div class="colh"><span>原稿</span><span><button class="btn" id="sample" type="button">例文</button> <button class="btn" id="clear" type="button">新しく書く</button></span></div>
+    <input id="title" placeholder="題名（例：ほけんだより　6月号）" aria-label="題名">
+    <div class="two">
+      <input id="org" placeholder="学校名・保健室" aria-label="学校名・保健室">
+      <input id="date" placeholder="発行日（例：令和8年6月1日）" aria-label="発行日">
+    </div>
+    <textarea id="draft" spellcheck="false" aria-label="本文" placeholder="本文を書くか、貼り付けてください。&#10;&#10;■ や【 】で始まる行は見出しになります。&#10;空行で段落を分けます。"></textarea>
+    <p class="hint">原稿はこのブラウザの中だけで処理し、外には送りません（この端末に自動で保存します）。</p>
+  </section>
+
+  <section aria-label="紙面">
+    <div class="colh"><span>紙面（A4）</span><span id="sheetinfo"></span></div>
+    <div class="sheetwrap"><div class="sheet marks" id="sheet"></div></div>
+  </section>
+
+  <aside class="checks" aria-label="確認">
+    <div class="colh"><span>確認</span></div>
+    <div class="ck"><h2>ルビ <small id="ruby-n"></small></h2>
+      <p class="muted" id="ruby-note"></p>
+      <div class="rubylist" id="rubylist"></div>
+    </div>
+    <div class="ck"><h2>説明を添えたい言葉 <small id="tech-n"></small></h2><div id="tech"></div></div>
+    <div class="ck"><h2>長い文 <small id="long-n"></small></h2><div id="long"></div></div>
+    <div class="ck"><h2 id="topic-h">今月よく書かれる話題</h2><table class="tp" id="topics"></table><p class="muted" id="topic-note" style="font-size:12px"></p></div>
+    <div class="ck"><h2>分量と漢字</h2><div id="levels"></div></div>
+  </aside>
 </div>
 
+<div class="foot">
+  <div>判定の根拠：学年別漢字配当表（2020年施行、1,026字）・常用漢字表・話題の語彙辞書と、全国の学校が公開している保健だより <span id="n-issues"></span> 号の集計値。AI は使わず、決まった規則で判定しています。</div>
+  <div>読みは辞書（kuromoji）による自動推定です。誤りがありうるので、書き出す前に「ルビ」の一覧で確かめてください。直した読みはこの端末に保存されます。</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
 <script>
 const D = {"kanji": "1一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六|2引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話|3悪安暗医委意育員院飲運泳駅央横屋温化荷界開階寒感漢館岸起期客究急級宮球去橋業曲局銀区苦具君係軽血決研県庫湖向幸港号根祭皿仕死使始指歯詩次事持式実写者主守取酒受州拾終習集住重宿所暑助昭消商章勝乗植申身神真深進世整昔全相送想息速族他打対待代第題炭短談着注柱丁帳調追定庭笛鉄転都度投豆島湯登等動童農波配倍箱畑発反坂板皮悲美鼻筆氷表秒病品負部服福物平返勉放味命面問役薬由油有遊予羊洋葉陽様落流旅両緑礼列練路和|4愛案以衣位茨印英栄媛塩岡億加果貨課芽賀改械害街各覚潟完官管関観願岐希季旗器機議求泣給挙漁共協鏡競極熊訓軍郡群径景芸欠結建健験固功好香候康佐差菜最埼材崎昨札刷察参産散残氏司試児治滋辞鹿失借種周祝順初松笑唱焼照城縄臣信井成省清静席積折節説浅戦選然争倉巣束側続卒孫帯隊達単置仲沖兆低底的典伝徒努灯働特徳栃奈梨熱念敗梅博阪飯飛必票標不夫付府阜富副兵別辺変便包法望牧末満未民無約勇要養浴利陸良料量輪類令冷例連老労録|5圧囲移因永営衛易益液演応往桜可仮価河過快解格確額刊幹慣眼紀基寄規喜技義逆久旧救居許境均禁句型経潔件険検限現減故個護効厚耕航鉱構興講告混査再災妻採際在財罪殺雑酸賛士支史志枝師資飼示似識質舎謝授修述術準序招証象賞条状常情織職制性政勢精製税責績接設絶祖素総造像増則測属率損貸態団断築貯張停提程適統堂銅導得毒独任燃能破犯判版比肥非費備評貧布婦武復複仏粉編弁保墓報豊防貿暴脈務夢迷綿輸余容略留領歴|6胃異遺域宇映延沿恩我灰拡革閣割株干巻看簡危机揮貴疑吸供胸郷勤筋系敬警劇激穴券絹権憲源厳己呼誤后孝皇紅降鋼刻穀骨困砂座済裁策冊蚕至私姿視詞誌磁射捨尺若樹収宗就衆従縦縮熟純処署諸除承将傷障蒸針仁垂推寸盛聖誠舌宣専泉洗染銭善奏窓創装層操蔵臓存尊退宅担探誕段暖値宙忠著庁頂腸潮賃痛敵展討党糖届難乳認納脳派拝背肺俳班晩否批秘俵腹奮並陛閉片補暮宝訪亡忘棒枚幕密盟模訳郵優預幼欲翌乱卵覧裏律臨朗論|", "joyo": "亜哀挨愛曖悪握圧扱宛嵐安案暗以衣位囲医依委威為畏胃尉異移萎偉椅彙意違維慰遺緯域育一壱逸茨芋引印因咽姻員院淫陰飲隠韻右宇羽雨唄鬱畝浦運雲永泳英映栄営詠影鋭衛易疫益液駅悦越謁閲円延沿炎怨宴媛援園煙猿遠鉛塩演縁艶汚王凹央応往押旺欧殴桜翁奥横岡屋億憶臆虞乙俺卸音恩温穏下化火加可仮何花佳価果河苛科架夏家荷華菓貨渦過嫁暇禍靴寡歌箇稼課蚊牙瓦我画芽賀雅餓介回灰会快戒改怪拐悔海界皆械絵開階塊楷解潰壊懐諧貝外劾害崖涯街慨蓋該概骸垣柿各角拡革格核殻郭覚較隔閣確獲嚇穫学岳楽額顎掛潟括活喝渇割葛滑褐轄且株釜鎌刈干刊甘汗缶完肝官冠巻看陥乾勘患貫寒喚堪換敢棺款間閑勧寛幹感漢慣管関歓監緩憾還館環簡観韓艦鑑丸含岸岩玩眼頑顔願企伎危机気岐希忌汽奇祈季紀軌既記起飢鬼帰基寄規亀喜幾揮期棋貴棄毀旗器畿輝機騎技宜偽欺義疑儀戯擬犠議菊吉喫詰却客脚逆虐九久及弓丘旧休吸朽臼求究泣急級糾宮救球給嗅窮牛去巨居拒拠挙虚許距魚御漁凶共叫狂京享供協況峡挟狭恐恭胸脅強教郷境橋矯鏡競響驚仰暁業凝曲局極玉巾斤均近金菌勤琴筋僅禁緊錦謹襟吟銀区句苦駆具惧愚空偶遇隅串屈掘窟熊繰君訓勲薫軍郡群兄刑形系径茎係型契計恵啓掲渓経蛍敬景軽傾携継詣慶憬稽憩警鶏芸迎鯨隙劇撃激桁欠穴血決結傑潔月犬件見券肩建研県倹兼剣拳軒健険圏堅検嫌献絹遣権憲賢謙鍵繭顕験懸元幻玄言弦限原現舷減源厳己戸古呼固股虎孤弧故枯個庫湖雇誇鼓錮顧五互午呉後娯悟碁語誤護口工公勾孔功巧広甲交光向后好江考行坑孝抗攻更効幸拘肯侯厚恒洪皇紅荒郊香候校耕航貢降高康控梗黄喉慌港硬絞項溝鉱構綱酵稿興衡鋼講購乞号合拷剛傲豪克告谷刻国黒穀酷獄骨駒込頃今困昆恨根婚混痕紺魂墾懇左佐沙査砂唆差詐鎖座挫才再災妻采砕宰栽彩採済祭斎細菜最裁債催塞歳載際埼在材剤財罪崎作削昨柵索策酢搾錯咲冊札刷刹拶殺察撮擦雑皿三山参桟蚕惨産傘散算酸賛残斬暫士子支止氏仕史司四市矢旨死糸至伺志私使刺始姉枝祉肢姿思指施師恣紙脂視紫詞歯嗣試詩資飼誌雌摯賜諮示字寺次耳自似児事侍治持時滋慈辞磁餌璽鹿式識軸七𠮟叱失室疾執湿嫉漆質実芝写社車舎者射捨赦斜煮遮謝邪蛇尺借酌釈爵若弱寂手主守朱取狩首殊珠酒腫種趣寿受呪授需儒樹収囚州舟秀周宗拾秋臭修袖終羞習週就衆集愁酬醜蹴襲十汁充住柔重従渋銃獣縦叔祝宿淑粛縮塾熟出述術俊春瞬旬巡盾准殉純循順準潤遵処初所書庶暑署緒諸女如助序叙徐除小升少召匠床抄肖尚招承昇松沼昭宵将消症祥称笑唱商渉章紹訟勝掌晶焼焦硝粧詔証象傷奨照詳彰障憧衝賞償礁鐘上丈冗条状乗城浄剰常情場畳蒸縄壌嬢錠譲醸色拭食植殖飾触嘱織職辱尻心申伸臣芯身辛侵信津神唇娠振浸真針深紳進森診寝慎新審震薪親人刃仁尽迅甚陣尋腎須図水吹垂炊帥粋衰推酔遂睡穂随髄枢崇数据杉裾寸瀬是井世正生成西声制姓征性青斉政星牲省凄逝清盛婿晴勢聖誠精製誓静請整醒税夕斥石赤昔析席脊隻惜戚責跡積績籍切折拙窃接設雪摂節説舌絶千川仙占先宣専泉浅洗染扇栓旋船戦煎羨腺詮践箋銭潜線遷選薦繊鮮全前善然禅漸膳繕狙阻祖租素措粗組疎訴塑遡礎双壮早争走奏相荘草送倉捜挿桑巣掃曹曽爽窓創喪痩葬装僧想層総遭槽踪操燥霜騒藻造像増憎蔵贈臓即束足促則息捉速側測俗族属賊続卒率存村孫尊損遜他多汰打妥唾堕惰駄太対体耐待怠胎退帯泰堆袋逮替貸隊滞態戴大代台第題滝宅択沢卓拓託濯諾濁但達脱奪棚誰丹旦担単炭胆探淡短嘆端綻誕鍛団男段断弾暖談壇地池知値恥致遅痴稚置緻竹畜逐蓄築秩窒茶着嫡中仲虫沖宙忠抽注昼柱衷酎鋳駐著貯丁弔庁兆町長挑帳張彫眺釣頂鳥朝貼超腸跳徴嘲潮澄調聴懲直勅捗沈珍朕陳賃鎮追椎墜通痛塚漬坪爪鶴低呈廷弟定底抵邸亭貞帝訂庭逓停偵堤提程艇締諦泥的笛摘滴適敵溺迭哲鉄徹撤天典店点展添転塡田伝殿電斗吐妬徒途都渡塗賭土奴努度怒刀冬灯当投豆東到逃倒凍唐島桃討透党悼盗陶塔搭棟湯痘登答等筒統稲踏糖頭謄藤闘騰同洞胴動堂童道働銅導瞳峠匿特得督徳篤毒独読栃凸突届屯豚頓貪鈍曇丼那奈内梨謎鍋南軟難二尼弐匂肉虹日入乳尿任妊忍認寧熱年念捻粘燃悩納能脳農濃把波派破覇馬婆罵拝杯背肺俳配排敗廃輩売倍梅培陪媒買賠白伯拍泊迫剝舶博薄麦漠縛爆箱箸畑肌八鉢発髪伐抜罰閥反半氾犯帆汎伴判坂阪板版班畔般販斑飯搬煩頒範繁藩晩番蛮盤比皮妃否批彼披肥非卑飛疲秘被悲扉費碑罷避尾眉美備微鼻膝肘匹必泌筆姫百氷表俵票評漂標苗秒病描猫品浜貧賓頻敏瓶不夫父付布扶府怖阜附訃負赴浮婦符富普腐敷膚賦譜侮武部舞封風伏服副幅復福腹複覆払沸仏物粉紛雰噴墳憤奮分文聞丙平兵併並柄陛閉塀幣弊蔽餅米壁璧癖別蔑片辺返変偏遍編弁便勉歩保哺捕補舗母募墓慕暮簿方包芳邦奉宝抱放法泡胞俸倣峰砲崩訪報蜂豊飽褒縫亡乏忙坊妨忘防房肪某冒剖紡望傍帽棒貿貌暴膨謀頰北木朴牧睦僕墨撲没勃堀本奔翻凡盆麻摩磨魔毎妹枚昧埋幕膜枕又末抹万満慢漫未味魅岬密蜜脈妙民眠矛務無夢霧娘名命明迷冥盟銘鳴滅免面綿麺茂模毛妄盲耗猛網目黙門紋問冶夜野弥厄役約訳薬躍闇由油喩愉諭輸癒唯友有勇幽悠郵湧猶裕遊雄誘憂融優与予余誉預幼用羊妖洋要容庸揚揺葉陽溶腰様瘍踊窯養擁謡曜抑沃浴欲翌翼拉裸羅来雷頼絡落酪辣乱卵覧濫藍欄吏利里理痢裏履璃離陸立律慄略柳流留竜粒隆硫侶旅虜慮了両良料涼猟陵量僚領寮療瞭糧力緑林厘倫輪隣臨瑠涙累塁類令礼冷励戻例鈴零霊隷齢麗暦歴列劣烈裂恋連廉練錬呂炉賂路露老労弄郎朗浪廊楼漏籠六録麓論和話賄脇惑枠湾腕填剥頬", "topics": {"感染症:インフルエンザ": ["インフルエンザ"], "感染症:新型コロナ": ["新型コロナ", "コロナウイルス", "COVID"], "感染症:感染性胃腸炎": ["感染性胃腸炎", "ノロウイルス", "ロタウイルス"], "感染症:溶連菌": ["溶連菌", "溶血性レンサ球菌"], "感染症:手足口病": ["手足口病"], "感染症:ヘルパンギーナ": ["ヘルパンギーナ"], "感染症:咽頭結膜熱": ["咽頭結膜熱", "プール熱"], "感染症:マイコプラズマ": ["マイコプラズマ"], "感染症:水痘": ["水痘", "水ぼうそう"], "感染症:麻しん": ["麻しん", "麻疹", "はしか"], "感染症:流行性耳下腺炎": ["流行性耳下腺炎", "おたふくかぜ"], "感染症:百日咳": ["百日咳"], "感染症:RSウイルス": ["RSウイルス"], "感染症:結膜炎": ["結膜炎"], "感染症:とびひ": ["とびひ", "伝染性膿痂疹"], "感染症:アタマジラミ": ["アタマジラミ", "頭じらみ"], "感染症:一般": ["感染症", "手洗い", "うがい", "咳エチケット", "換気"], "熱中症": ["熱中症", "水分補給", "こまめな水分"], "歯科": ["むし歯", "虫歯", "歯みがき", "歯磨き", "はみがき", "歯科", "歯肉", "歯垢", "6月4日"], "視力": ["視力", "目の健康", "近視", "ブルーライト", "目の愛護"], "睡眠": ["睡眠", "早寝", "すいみん", "夜ふかし"], "食事": ["朝ごはん", "朝食", "栄養", "好き嫌い"], "運動": ["運動", "外遊び"], "メディア": ["ゲーム", "スマホ", "スマートフォン", "メディア", "ネット"], "こころ": ["こころ", "心の健康", "ストレス", "悩み", "相談"], "けが・安全": ["けが", "ケガ", "怪我", "応急手当", "手当て", "交通安全"], "アレルギー": ["アレルギー", "アナフィラキシー", "エピペン", "花粉症"], "発育": ["身長", "体重", "発育", "成長", "肥満"], "性・いのち": ["いのち", "命の", "プライベートゾーン", "思春期"], "喫煙・薬物": ["たばこ", "タバコ", "薬物", "飲酒"], "構成:健診結果の報告": ["健康診断の結果", "検診の結果", "健診結果", "受診率", "治療率"], "構成:季節の挨拶": ["季節になりました", "季節がやってきました", "暑い日が続", "寒い日が続", "寒さが厳しく", "春の日差し", "秋も深まり"], "構成:保護者への依頼": ["ご家庭でも", "ご家庭で", "お願いします", "ご協力", "ご確認ください"], "構成:保健室利用状況": ["保健室の利用", "保健室利用", "来室"], "構成:保健目標": ["保健目標", "今月の目標"], "構成:受診勧告": ["受診してください", "受診をお願い", "治療のお知らせ"]}, "technical": ["感染性胃腸炎", "溶連菌", "咽頭結膜熱", "ヘルパンギーナ", "手足口病", "罹患", "潜伏期間", "飛沫感染", "接触感染", "抗体", "免疫", "既往歴", "処置", "受診", "経過観察", "アナフィラキシー", "アレルゲン", "側彎症", "屈折異常", "齲歯", "歯垢", "歯周疾患", "熱中症", "脱水"], "dist": {"小": {"kanji_ratio": [0.2356, 0.2688, 0.3105, 0.3516, 0.3896], "out_of_grade_kanji_ratio": [0.0389, 0.058, 0.0796, 0.101, 0.1221], "char_count": [413.0, 610.75, 893.0, 1232.0, 1567.0], "ruby_kanji_ratio": [0.0, 0.1203, 0.5644, 0.8436, 0.9286], "katakana_ratio": [0.0204, 0.0336, 0.0517, 0.0738, 0.0974], "technical_term_per_1k": [0.0, 0.0, 1.086, 3.1603, 5.7131], "n": 6704, "char_by_month": {"1": 796, "2": 896, "3": 836, "4": 1166, "5": 929, "6": 915, "7": 887, "8": 761, "9": 865, "10": 848, "11": 893, "12": 838}}, "中": {"kanji_ratio": [0.2763, 0.3018, 0.3304, 0.3646, 0.3995], "char_count": [438.4, 671.0, 1004.0, 1336.0, 1698.6], "ruby_kanji_ratio": [0.0, 0.0, 0.0, 0.0, 0.0303], "katakana_ratio": [0.0247, 0.0387, 0.0565, 0.0791, 0.1061], "technical_term_per_1k": [0.0, 0.0, 1.314, 3.466, 6.436], "n": 3415, "char_by_month": {"1": 1010, "2": 1055, "3": 973, "4": 1180, "5": 989, "6": 891, "7": 995, "8": 979, "9": 947, "10": 917, "11": 999, "12": 1108}}}, "topic_month": {"1": {"感染症:インフルエンザ": 0.5318, "感染症:新型コロナ": 0.2821, "感染症:感染性胃腸炎": 0.108, "感染症:溶連菌": 0.0324, "感染症:手足口病": 0.0084, "感染症:ヘルパンギーナ": 0.0036, "感染症:咽頭結膜熱": 0.012, "感染症:マイコプラズマ": 0.0132, "感染症:水痘": 0.012, "感染症:麻しん": 0.0084, "感染症:流行性耳下腺炎": 0.0096, "感染症:百日咳": 0.0048, "感染症:RSウイルス": 0.0024, "感染症:結膜炎": 0.0168, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.0012, "感染症:一般": 0.7239, "熱中症": 0.078, "歯科": 0.102, "視力": 0.0672, "睡眠": 0.431, "食事": 0.3433, "運動": 0.3253, "メディア": 0.2221, "こころ": 0.2809, "けが・安全": 0.2281, "アレルギー": 0.0312, "発育": 0.377, "性・いのち": 0.0504, "喫煙・薬物": 0.0324, "構成:健診結果の報告": 0.0168, "構成:季節の挨拶": 0.0912, "構成:保護者への依頼": 0.4598, "構成:保健室利用状況": 0.0564, "構成:保健目標": 0.2389, "構成:受診勧告": 0.0204}, "2": {"感染症:インフルエンザ": 0.4401, "感染症:新型コロナ": 0.313, "感染症:感染性胃腸炎": 0.0711, "感染症:溶連菌": 0.0312, "感染症:手足口病": 0.0, "感染症:ヘルパンギーナ": 0.0, "感染症:咽頭結膜熱": 0.0012, "感染症:マイコプラズマ": 0.0125, "感染症:水痘": 0.02, "感染症:麻しん": 0.0037, "感染症:流行性耳下腺炎": 0.0062, "感染症:百日咳": 0.0, "感染症:RSウイルス": 0.0012, "感染症:結膜炎": 0.0037, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.0012, "感染症:一般": 0.6658, "熱中症": 0.0374, "歯科": 0.1247, "視力": 0.0524, "睡眠": 0.3441, "食事": 0.2382, "運動": 0.298, "メディア": 0.2045, "こころ": 0.4975, "けが・安全": 0.1933, "アレルギー": 0.2469, "発育": 0.2905, "性・いのち": 0.0898, "喫煙・薬物": 0.0436, "構成:健診結果の報告": 0.0212, "構成:季節の挨拶": 0.2406, "構成:保護者への依頼": 0.3429, "構成:保健室利用状況": 0.0686, "構成:保健目標": 0.2469, "構成:受診勧告": 0.0249}, "3": {"感染症:インフルエンザ": 0.1951, "感染症:新型コロナ": 0.1802, "感染症:感染性胃腸炎": 0.019, "感染症:溶連菌": 0.0257, "感染症:手足口病": 0.0054, "感染症:ヘルパンギーナ": 0.0, "感染症:咽頭結膜熱": 0.0014, "感染症:マイコプラズマ": 0.0068, "感染症:水痘": 0.0108, "感染症:麻しん": 0.0041, "感染症:流行性耳下腺炎": 0.0068, "感染症:百日咳": 0.0027, "感染症:RSウイルス": 0.0, "感染症:結膜炎": 0.0108, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.0, "感染症:一般": 0.4743, "熱中症": 0.0447, "歯科": 0.3076, "視力": 0.122, "睡眠": 0.3401, "食事": 0.2561, "運動": 0.3347, "メディア": 0.2412, "こころ": 0.3347, "けが・安全": 0.5691, "アレルギー": 0.1233, "発育": 0.4634, "性・いのち": 0.0542, "喫煙・薬物": 0.0244, "構成:健診結果の報告": 0.0745, "構成:季節の挨拶": 0.065, "構成:保護者への依頼": 0.435, "構成:保健室利用状況": 0.3469, "構成:保健目標": 0.252, "構成:受診勧告": 0.0285}, "4": {"感染症:インフルエンザ": 0.1402, "感染症:新型コロナ": 0.2191, "感染症:感染性胃腸炎": 0.0448, "感染症:溶連菌": 0.0565, "感染症:手足口病": 0.0212, "感染症:ヘルパンギーナ": 0.0047, "感染症:咽頭結膜熱": 0.0766, "感染症:マイコプラズマ": 0.0247, "感染症:水痘": 0.0836, "感染症:麻しん": 0.0872, "感染症:流行性耳下腺炎": 0.0848, "感染症:百日咳": 0.0612, "感染症:RSウイルス": 0.0, "感染症:結膜炎": 0.0683, "感染症:とびひ": 0.0118, "感染症:アタマジラミ": 0.0047, "感染症:一般": 0.3428, "熱中症": 0.0506, "歯科": 0.7656, "視力": 0.702, "睡眠": 0.1578, "食事": 0.2073, "運動": 0.3569, "メディア": 0.0271, "こころ": 0.457, "けが・安全": 0.5465, "アレルギー": 0.1119, "発育": 0.5984, "性・いのち": 0.0071, "喫煙・薬物": 0.0035, "構成:健診結果の報告": 0.1649, "構成:季節の挨拶": 0.0247, "構成:保護者への依頼": 0.8021, "構成:保健室利用状況": 0.1614, "構成:保健目標": 0.1849, "構成:受診勧告": 0.1178}, "5": {"感染症:インフルエンザ": 0.0532, "感染症:新型コロナ": 0.1402, "感染症:感染性胃腸炎": 0.0123, "感染症:溶連菌": 0.0184, "感染症:手足口病": 0.0082, "感染症:ヘルパンギーナ": 0.0072, "感染症:咽頭結膜熱": 0.0164, "感染症:マイコプラズマ": 0.0082, "感染症:水痘": 0.0235, "感染症:麻しん": 0.0317, "感染症:流行性耳下腺炎": 0.0184, "感染症:百日咳": 0.0184, "感染症:RSウイルス": 0.0, "感染症:結膜炎": 0.0368, "感染症:とびひ": 0.0092, "感染症:アタマジラミ": 0.0092, "感染症:一般": 0.2651, "熱中症": 0.4729, "歯科": 0.5711, "視力": 0.3255, "睡眠": 0.4135, "食事": 0.3562, "運動": 0.4821, "メディア": 0.1269, "こころ": 0.347, "けが・安全": 0.3275, "アレルギー": 0.0358, "発育": 0.218, "性・いのち": 0.0143, "喫煙・薬物": 0.0174, "構成:健診結果の報告": 0.2958, "構成:季節の挨拶": 0.0993, "構成:保護者への依頼": 0.5107, "構成:保健室利用状況": 0.0553, "構成:保健目標": 0.2252, "構成:受診勧告": 0.1781}, "6": {"感染症:インフルエンザ": 0.0176, "感染症:新型コロナ": 0.095, "感染症:感染性胃腸炎": 0.0088, "感染症:溶連菌": 0.0186, "感染症:手足口病": 0.0078, "感染症:ヘルパンギーナ": 0.0078, "感染症:咽頭結膜熱": 0.0245, "感染症:マイコプラズマ": 0.001, "感染症:水痘": 0.0127, "感染症:麻しん": 0.0118, "感染症:流行性耳下腺炎": 0.0059, "感染症:百日咳": 0.0039, "感染症:RSウイルス": 0.0029, "感染症:結膜炎": 0.0402, "感染症:とびひ": 0.0108, "感染症:アタマジラミ": 0.0362, "感染症:一般": 0.2782, "熱中症": 0.5818, "歯科": 0.8178, "視力": 0.0764, "睡眠": 0.382, "食事": 0.4035, "運動": 0.4407, "メディア": 0.1028, "こころ": 0.2311, "けが・安全": 0.2321, "アレルギー": 0.0333, "発育": 0.142, "性・いのち": 0.0215, "喫煙・薬物": 0.0049, "構成:健診結果の報告": 0.2321, "構成:季節の挨拶": 0.1224, "構成:保護者への依頼": 0.4535, "構成:保健室利用状況": 0.0509, "構成:保健目標": 0.2801, "構成:受診勧告": 0.1508}, "7": {"感染症:インフルエンザ": 0.0265, "感染症:新型コロナ": 0.1, "感染症:感染性胃腸炎": 0.0115, "感染症:溶連菌": 0.0354, "感染症:手足口病": 0.0522, "感染症:ヘルパンギーナ": 0.0522, "感染症:咽頭結膜熱": 0.0416, "感染症:マイコプラズマ": 0.0053, "感染症:水痘": 0.0204, "感染症:麻しん": 0.0106, "感染症:流行性耳下腺炎": 0.0071, "感染症:百日咳": 0.0062, "感染症:RSウイルス": 0.0124, "感染症:結膜炎": 0.0381, "感染症:とびひ": 0.0133, "感染症:アタマジラミ": 0.0115, "感染症:一般": 0.2982, "熱中症": 0.7354, "歯科": 0.4487, "視力": 0.1398, "睡眠": 0.4681, "食事": 0.4053, "運動": 0.4513, "メディア": 0.277, "こころ": 0.2204, "けが・安全": 0.1858, "アレルギー": 0.0345, "発育": 0.2699, "性・いのち": 0.0575, "喫煙・薬物": 0.0274, "構成:健診結果の報告": 0.3319, "構成:季節の挨拶": 0.1938, "構成:保護者への依頼": 0.5257, "構成:保健室利用状況": 0.0814, "構成:保健目標": 0.231, "構成:受診勧告": 0.1549}, "8": {"感染症:インフルエンザ": 0.029, "感染症:新型コロナ": 0.2826, "感染症:感染性胃腸炎": 0.0145, "感染症:溶連菌": 0.0072, "感染症:手足口病": 0.0217, "感染症:ヘルパンギーナ": 0.0145, "感染症:咽頭結膜熱": 0.0072, "感染症:マイコプラズマ": 0.0, "感染症:水痘": 0.0, "感染症:麻しん": 0.0072, "感染症:流行性耳下腺炎": 0.0, "感染症:百日咳": 0.0072, "感染症:RSウイルス": 0.0, "感染症:結膜炎": 0.0072, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.0, "感染症:一般": 0.3768, "熱中症": 0.558, "歯科": 0.2319, "視力": 0.1232, "睡眠": 0.442, "食事": 0.4493, "運動": 0.4348, "メディア": 0.3768, "こころ": 0.3261, "けが・安全": 0.2754, "アレルギー": 0.0362, "発育": 0.2609, "性・いのち": 0.0362, "喫煙・薬物": 0.0217, "構成:健診結果の報告": 0.087, "構成:季節の挨拶": 0.2029, "構成:保護者への依頼": 0.413, "構成:保健室利用状況": 0.029, "構成:保健目標": 0.0725, "構成:受診勧告": 0.029}, "9": {"感染症:インフルエンザ": 0.0648, "感染症:新型コロナ": 0.1671, "感染症:感染性胃腸炎": 0.0075, "感染症:溶連菌": 0.0113, "感染症:手足口病": 0.0085, "感染症:ヘルパンギーナ": 0.0019, "感染症:咽頭結膜熱": 0.0066, "感染症:マイコプラズマ": 0.0085, "感染症:水痘": 0.0075, "感染症:麻しん": 0.0075, "感染症:流行性耳下腺炎": 0.0056, "感染症:百日咳": 0.0028, "感染症:RSウイルス": 0.0047, "感染症:結膜炎": 0.0047, "感染症:とびひ": 0.0019, "感染症:アタマジラミ": 0.0038, "感染症:一般": 0.2817, "熱中症": 0.43, "歯科": 0.2169, "視力": 0.1258, "睡眠": 0.5089, "食事": 0.4404, "運動": 0.4441, "メディア": 0.2516, "こころ": 0.2563, "けが・安全": 0.646, "アレルギー": 0.046, "発育": 0.3624, "性・いのち": 0.0535, "喫煙・薬物": 0.015, "構成:健診結果の報告": 0.0441, "構成:季節の挨拶": 0.2704, "構成:保護者への依頼": 0.43, "構成:保健室利用状況": 0.0901, "構成:保健目標": 0.2516, "構成:受診勧告": 0.031}, "10": {"感染症:インフルエンザ": 0.2507, "感染症:新型コロナ": 0.1756, "感染症:感染性胃腸炎": 0.0244, "感染症:溶連菌": 0.0176, "感染症:手足口病": 0.0205, "感染症:ヘルパンギーナ": 0.0039, "感染症:咽頭結膜熱": 0.0078, "感染症:マイコプラズマ": 0.0293, "感染症:水痘": 0.0127, "感染症:麻しん": 0.0039, "感染症:流行性耳下腺炎": 0.0078, "感染症:百日咳": 0.0039, "感染症:RSウイルス": 0.002, "感染症:結膜炎": 0.0107, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.002, "感染症:一般": 0.4624, "熱中症": 0.0995, "歯科": 0.2293, "視力": 0.6576, "睡眠": 0.3824, "食事": 0.281, "運動": 0.3863, "メディア": 0.5239, "こころ": 0.2205, "けが・安全": 0.2439, "アレルギー": 0.0312, "発育": 0.2576, "性・いのち": 0.0459, "喫煙・薬物": 0.0195, "構成:健診結果の報告": 0.0605, "構成:季節の挨拶": 0.0829, "構成:保護者への依頼": 0.3776, "構成:保健室利用状況": 0.0644, "構成:保健目標": 0.2966, "構成:受診勧告": 0.0683}, "11": {"感染症:インフルエンザ": 0.4924, "感染症:新型コロナ": 0.2427, "感染症:感染性胃腸炎": 0.0715, "感染症:溶連菌": 0.041, "感染症:手足口病": 0.0387, "感染症:ヘルパンギーナ": 0.0035, "感染症:咽頭結膜熱": 0.0211, "感染症:マイコプラズマ": 0.0844, "感染症:水痘": 0.0258, "感染症:麻しん": 0.0176, "感染症:流行性耳下腺炎": 0.0176, "感染症:百日咳": 0.0129, "感染症:RSウイルス": 0.0012, "感染症:結膜炎": 0.0152, "感染症:とびひ": 0.0, "感染症:アタマジラミ": 0.0012, "感染症:一般": 0.7057, "熱中症": 0.0422, "歯科": 0.5287, "視力": 0.1583, "睡眠": 0.3306, "食事": 0.2567, "運動": 0.313, "メディア": 0.204, "こころ": 0.2579, "けが・安全": 0.136, "アレルギー": 0.0293, "発育": 0.1594, "性・いのち": 0.0469, "喫煙・薬物": 0.0258, "構成:健診結果の報告": 0.0797, "構成:季節の挨拶": 0.1055, "構成:保護者への依頼": 0.388, "構成:保健室利用状況": 0.0821, "構成:保健目標": 0.2638, "構成:受診勧告": 0.0739}, "12": {"感染症:インフルエンザ": 0.5887, "感染症:新型コロナ": 0.3442, "感染症:感染性胃腸炎": 0.145, "感染症:溶連菌": 0.0444, "感染症:手足口病": 0.0238, "感染症:ヘルパンギーナ": 0.0011, "感染症:咽頭結膜熱": 0.0216, "感染症:マイコプラズマ": 0.0649, "感染症:水痘": 0.026, "感染症:麻しん": 0.0119, "感染症:流行性耳下腺炎": 0.013, "感染症:百日咳": 0.0097, "感染症:RSウイルス": 0.0119, "感染症:結膜炎": 0.013, "感染症:とびひ": 0.0011, "感染症:アタマジラミ": 0.0022, "感染症:一般": 0.7814, "熱中症": 0.0801, "歯科": 0.2424, "視力": 0.0725, "睡眠": 0.3842, "食事": 0.3063, "運動": 0.3323, "メディア": 0.25, "こころ": 0.2673, "けが・安全": 0.2186, "アレルギー": 0.0335, "発育": 0.1916, "性・いのち": 0.053, "喫煙・薬物": 0.0855, "構成:健診結果の報告": 0.0574, "構成:季節の挨拶": 0.0898, "構成:保護者への依頼": 0.4102, "構成:保健室利用状況": 0.0823, "構成:保健目標": 0.2446, "構成:受診勧告": 0.0541}}, "regional": [{"block": "中国", "n_issues": 1054, "topic": "熱中症", "share": 0.2732, "peak_month": 7, "peak_share": 0.7568}, {"block": "中国", "n_issues": 1054, "topic": "感染症:インフルエンザ", "share": 0.2638, "peak_month": 12, "peak_share": 0.7}, {"block": "中国", "n_issues": 1054, "topic": "感染症:新型コロナ", "share": 0.3131, "peak_month": 1, "peak_share": 0.5125}, {"block": "中国", "n_issues": 1054, "topic": "歯科", "share": 0.3738, "peak_month": 6, "peak_share": 0.6893}, {"block": "中国", "n_issues": 1054, "topic": "視力", "share": 0.2353, "peak_month": 10, "peak_share": 0.7791}, {"block": "中国", "n_issues": 1054, "topic": "睡眠", "share": 0.3397, "peak_month": 9, "peak_share": 0.5321}, {"block": "中国", "n_issues": 1054, "topic": "メディア", "share": 0.2192, "peak_month": 8, "peak_share": 0.5185}, {"block": "中国", "n_issues": 1054, "topic": "食事", "share": 0.2951, "peak_month": 8, "peak_share": 0.4444}, {"block": "中国", "n_issues": 1054, "topic": "運動", "share": 0.4127, "peak_month": 5, "peak_share": 0.5934}, {"block": "中国", "n_issues": 1054, "topic": "こころ", "share": 0.2979, "peak_month": 4, "peak_share": 0.4786}, {"block": "中国", "n_issues": 1054, "topic": "けが・安全", "share": 0.3397, "peak_month": 9, "peak_share": 0.5963}, {"block": "中国", "n_issues": 1054, "topic": "アレルギー", "share": 0.0617, "peak_month": 2, "peak_share": 0.3333}, {"block": "中部", "n_issues": 3385, "topic": "熱中症", "share": 0.2783, "peak_month": 7, "peak_share": 0.7209}, {"block": "中部", "n_issues": 3385, "topic": "感染症:インフルエンザ", "share": 0.2174, "peak_month": 12, "peak_share": 0.5858}, {"block": "中部", "n_issues": 3385, "topic": "感染症:新型コロナ", "share": 0.19, "peak_month": 8, "peak_share": 0.3617}, {"block": "中部", "n_issues": 3385, "topic": "歯科", "share": 0.3941, "peak_month": 6, "peak_share": 0.8168}, {"block": "中部", "n_issues": 3385, "topic": "視力", "share": 0.2207, "peak_month": 4, "peak_share": 0.7403}, {"block": "中部", "n_issues": 3385, "topic": "睡眠", "share": 0.4245, "peak_month": 9, "peak_share": 0.5343}, {"block": "中部", "n_issues": 3385, "topic": "メディア", "share": 0.2866, "peak_month": 10, "peak_share": 0.595}, {"block": "中部", "n_issues": 3385, "topic": "食事", "share": 0.3474, "peak_month": 8, "peak_share": 0.5532}, {"block": "中部", "n_issues": 3385, "topic": "運動", "share": 0.4157, "peak_month": 9, "peak_share": 0.5522}, {"block": "中部", "n_issues": 3385, "topic": "こころ", "share": 0.3359, "peak_month": 2, "peak_share": 0.5938}, {"block": "中部", "n_issues": 3385, "topic": "けが・安全", "share": 0.317, "peak_month": 9, "peak_share": 0.7164}, {"block": "中部", "n_issues": 3385, "topic": "アレルギー", "share": 0.0482, "peak_month": 2, "peak_share": 0.1424}, {"block": "九州・沖縄", "n_issues": 454, "topic": "熱中症", "share": 0.3106, "peak_month": 7, "peak_share": 0.75}, {"block": "九州・沖縄", "n_issues": 454, "topic": "感染症:インフルエンザ", "share": 0.2026, "peak_month": 1, "peak_share": 0.7097}, {"block": "九州・沖縄", "n_issues": 454, "topic": "感染症:新型コロナ", "share": 0.1079, "peak_month": 8, "peak_share": 0.3333}, {"block": "九州・沖縄", "n_issues": 454, "topic": "歯科", "share": 0.4604, "peak_month": 6, "peak_share": 0.8511}, {"block": "九州・沖縄", "n_issues": 454, "topic": "視力", "share": 0.2709, "peak_month": 4, "peak_share": 0.717}, {"block": "九州・沖縄", "n_issues": 454, "topic": "睡眠", "share": 0.3612, "peak_month": 8, "peak_share": 0.5}, {"block": "九州・沖縄", "n_issues": 454, "topic": "メディア", "share": 0.2004, "peak_month": 10, "peak_share": 0.4516}, {"block": "九州・沖縄", "n_issues": 454, "topic": "食事", "share": 0.315, "peak_month": 1, "peak_share": 0.4516}, {"block": "九州・沖縄", "n_issues": 454, "topic": "運動", "share": 0.3656, "peak_month": 8, "peak_share": 0.5}, {"block": "九州・沖縄", "n_issues": 454, "topic": "こころ", "share": 0.2731, "peak_month": 2, "peak_share": 0.5769}, {"block": "九州・沖縄", "n_issues": 454, "topic": "けが・安全", "share": 0.3414, "peak_month": 9, "peak_share": 0.6491}, {"block": "九州・沖縄", "n_issues": 454, "topic": "アレルギー", "share": 0.0617, "peak_month": 2, "peak_share": 0.3462}, {"block": "北海道", "n_issues": 104, "topic": "熱中症", "share": 0.1923, "peak_month": 6, "peak_share": 0.75}, {"block": "北海道", "n_issues": 104, "topic": "感染症:インフルエンザ", "share": 0.1635, "peak_month": 11, "peak_share": 0.7143}, {"block": "北海道", "n_issues": 104, "topic": "感染症:新型コロナ", "share": 0.0865, "peak_month": 4, "peak_share": 0.3125}, {"block": "北海道", "n_issues": 104, "topic": "歯科", "share": 0.2115, "peak_month": 4, "peak_share": 0.5}, {"block": "北海道", "n_issues": 104, "topic": "視力", "share": 0.25, "peak_month": 10, "peak_share": 0.5833}, {"block": "北海道", "n_issues": 104, "topic": "睡眠", "share": 0.3654, "peak_month": 1, "peak_share": 0.6667}, {"block": "北海道", "n_issues": 104, "topic": "メディア", "share": 0.1923, "peak_month": 10, "peak_share": 0.4167}, {"block": "北海道", "n_issues": 104, "topic": "食事", "share": 0.3846, "peak_month": 1, "peak_share": 0.6667}, {"block": "北海道", "n_issues": 104, "topic": "運動", "share": 0.3077, "peak_month": 6, "peak_share": 0.75}, {"block": "北海道", "n_issues": 104, "topic": "こころ", "share": 0.3173, "peak_month": 2, "peak_share": 0.8}, {"block": "北海道", "n_issues": 104, "topic": "けが・安全", "share": 0.3269, "peak_month": 8, "peak_share": 0.625}, {"block": "北海道", "n_issues": 104, "topic": "アレルギー", "share": 0.0577, "peak_month": 8, "peak_share": 0.25}, {"block": "四国", "n_issues": 423, "topic": "熱中症", "share": 0.2813, "peak_month": 7, "peak_share": 0.8222}, {"block": "四国", "n_issues": 423, "topic": "感染症:インフルエンザ", "share": 0.1962, "peak_month": 12, "peak_share": 0.5833}, {"block": "四国", "n_issues": 423, "topic": "感染症:新型コロナ", "share": 0.1442, "peak_month": 12, "peak_share": 0.3056}, {"block": "四国", "n_issues": 423, "topic": "歯科", "share": 0.3522, "peak_month": 6, "peak_share": 0.8372}, {"block": "四国", "n_issues": 423, "topic": "視力", "share": 0.1962, "peak_month": 10, "peak_share": 0.6429}, {"block": "四国", "n_issues": 423, "topic": "睡眠", "share": 0.3806, "peak_month": 7, "peak_share": 0.5778}, {"block": "四国", "n_issues": 423, "topic": "メディア", "share": 0.2884, "peak_month": 10, "peak_share": 0.5714}, {"block": "四国", "n_issues": 423, "topic": "食事", "share": 0.3735, "peak_month": 7, "peak_share": 0.6}, {"block": "四国", "n_issues": 423, "topic": "運動", "share": 0.3735, "peak_month": 7, "peak_share": 0.6222}, {"block": "四国", "n_issues": 423, "topic": "こころ", "share": 0.305, "peak_month": 2, "peak_share": 0.5}, {"block": "四国", "n_issues": 423, "topic": "けが・安全", "share": 0.2908, "peak_month": 4, "peak_share": 0.6136}, {"block": "四国", "n_issues": 423, "topic": "アレルギー", "share": 0.0662, "peak_month": 2, "peak_share": 0.2941}, {"block": "東北", "n_issues": 196, "topic": "熱中症", "share": 0.25, "peak_month": 8, "peak_share": 0.7}, {"block": "東北", "n_issues": 196, "topic": "感染症:インフルエンザ", "share": 0.2143, "peak_month": 2, "peak_share": 0.8333}, {"block": "東北", "n_issues": 196, "topic": "感染症:新型コロナ", "share": 0.1786, "peak_month": 2, "peak_share": 0.6667}, {"block": "東北", "n_issues": 196, "topic": "歯科", "share": 0.4796, "peak_month": 4, "peak_share": 0.7857}, {"block": "東北", "n_issues": 196, "topic": "視力", "share": 0.2551, "peak_month": 4, "peak_share": 0.6786}, {"block": "東北", "n_issues": 196, "topic": "睡眠", "share": 0.3724, "peak_month": 3, "peak_share": 0.6667}, {"block": "東北", "n_issues": 196, "topic": "メディア", "share": 0.2806, "peak_month": 3, "peak_share": 0.5}, {"block": "東北", "n_issues": 196, "topic": "食事", "share": 0.2296, "peak_month": 3, "peak_share": 0.4167}, {"block": "東北", "n_issues": 196, "topic": "運動", "share": 0.3776, "peak_month": 5, "peak_share": 0.6296}, {"block": "東北", "n_issues": 196, "topic": "こころ", "share": 0.2806, "peak_month": 7, "peak_share": 0.4615}, {"block": "東北", "n_issues": 196, "topic": "けが・安全", "share": 0.2449, "peak_month": 8, "peak_share": 0.7}, {"block": "東北", "n_issues": 196, "topic": "アレルギー", "share": 0.0561, "peak_month": 3, "peak_share": 0.3333}, {"block": "近畿", "n_issues": 1943, "topic": "熱中症", "share": 0.2805, "peak_month": 7, "peak_share": 0.7874}, {"block": "近畿", "n_issues": 1943, "topic": "感染症:インフルエンザ", "share": 0.1976, "peak_month": 1, "peak_share": 0.474}, {"block": "近畿", "n_issues": 1943, "topic": "感染症:新型コロナ", "share": 0.1585, "peak_month": 2, "peak_share": 0.2595}, {"block": "近畿", "n_issues": 1943, "topic": "歯科", "share": 0.3217, "peak_month": 6, "peak_share": 0.7604}, {"block": "近畿", "n_issues": 1943, "topic": "視力", "share": 0.1894, "peak_month": 4, "peak_share": 0.6692}, {"block": "近畿", "n_issues": 1943, "topic": "睡眠", "share": 0.3263, "peak_month": 9, "peak_share": 0.4455}, {"block": "近畿", "n_issues": 1943, "topic": "メディア", "share": 0.1631, "peak_month": 10, "peak_share": 0.4667}, {"block": "近畿", "n_issues": 1943, "topic": "食事", "share": 0.2872, "peak_month": 9, "peak_share": 0.4406}, {"block": "近畿", "n_issues": 1943, "topic": "運動", "share": 0.3325, "peak_month": 7, "peak_share": 0.4203}, {"block": "近畿", "n_issues": 1943, "topic": "こころ", "share": 0.2594, "peak_month": 4, "peak_share": 0.4812}, {"block": "近畿", "n_issues": 1943, "topic": "けが・安全", "share": 0.3052, "peak_month": 9, "peak_share": 0.6337}, {"block": "近畿", "n_issues": 1943, "topic": "アレルギー", "share": 0.0669, "peak_month": 2, "peak_share": 0.3291}, {"block": "関東", "n_issues": 2577, "topic": "熱中症", "share": 0.2573, "peak_month": 7, "peak_share": 0.7177}, {"block": "関東", "n_issues": 2577, "topic": "感染症:インフルエンザ", "share": 0.279, "peak_month": 12, "peak_share": 0.6802}, {"block": "関東", "n_issues": 2577, "topic": "感染症:新型コロナ", "share": 0.2363, "peak_month": 8, "peak_share": 0.4615}, {"block": "関東", "n_issues": 2577, "topic": "歯科", "share": 0.4886, "peak_month": 6, "peak_share": 0.9025}, {"block": "関東", "n_issues": 2577, "topic": "視力", "share": 0.2309, "peak_month": 4, "peak_share": 0.7333}, {"block": "関東", "n_issues": 2577, "topic": "睡眠", "share": 0.3908, "peak_month": 8, "peak_share": 0.5385}, {"block": "関東", "n_issues": 2577, "topic": "メディア", "share": 0.1711, "peak_month": 10, "peak_share": 0.4913}, {"block": "関東", "n_issues": 2577, "topic": "食事", "share": 0.3419, "peak_month": 8, "peak_share": 0.6154}, {"block": "関東", "n_issues": 2577, "topic": "運動", "share": 0.3807, "peak_month": 7, "peak_share": 0.4898}, {"block": "関東", "n_issues": 2577, "topic": "こころ", "share": 0.2961, "peak_month": 2, "peak_share": 0.5369}, {"block": "関東", "n_issues": 2577, "topic": "けが・安全", "share": 0.3306, "peak_month": 9, "peak_share": 0.6282}, {"block": "関東", "n_issues": 2577, "topic": "アレルギー", "share": 0.085, "peak_month": 2, "peak_share": 0.2857}], "n_issues": 10355};
 const $ = id => document.getElementById(id);
@@ -181,137 +164,201 @@ const pct = (x,d=0) => (x*100).toFixed(d)+"%";
 const KG = {}; D.kanji.split("|").forEach(s=>{if(!s)return;const g=+s[0];for(const ch of s.slice(1))KG[ch]=g;});
 // 習う時期：1〜6＝小学校の学年、7＝中学校（常用漢字のうち配当表にない字）、99＝常用漢字にない
 const JOYO=new Set(D.joyo||"");
-function lv(c){return KG[c]||(JOYO.has(c)?7:99);}
-function lvName(g){return g<=6?g+"年で習う":g===7?"中学校で習う":"常用漢字にない";}
-function lvTag(g){return g<=6?g+"年":g===7?"中":"外";}
-const KANJI_RE=/[一-鿿㐀-䶿]/g;
+const isK=c=>/[一-鿿㐀-䶿々〆ヶ]/.test(c);
+function lv(c){if(c==="々")return 0;return KG[c]||(JOYO.has(c)?7:99);}
 const BLOCKS=["北海道","東北","関東","中部","近畿","中国","四国","九州・沖縄"];
 const NAMES=t=>t.replace("感染症:","").replace("構成:","");
-const SAMPLE=`ほけんだより　6月号
+const kata2hira=s=>s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SAMPLE={title:"ほけんだより　6月号",org:"〇〇小学校　保健室",date:"令和8年6月1日",body:`6月の保健目標：歯を大切にしよう
 
-6月の保健目標：歯を大切にしよう
-
+■歯と口の健康週間
 6月4日から10日は「歯と口の健康週間」です。毎日の歯みがきで、歯垢をしっかり落としましょう。むし歯は、歯垢の中の細菌が酸を出して歯を溶かすことで進行します。食べた後はうがいをし、寝る前は保護者の方に仕上げみがきをお願いします。
 
+■歯科検診の結果
 歯科検診の結果をお配りしました。受診が必要なお子さんは、夏休みまでに歯科医院を受診し、受診報告書を学校へ提出してください。
 
-梅雨の時期は、湿度が高く体温調節が難しくなります。暑さに慣れていない今の時期は、熱中症に注意が必要です。水筒を持たせ、こまめに水分補給をするよう声をかけてください。
+■熱中症に気をつけましょう
+梅雨の時期は、湿度が高く体温調節が難しくなります。暑さに慣れていない今の時期は、熱中症に注意が必要です。水筒を持たせ、こまめに水分補給をするよう声をかけてください。`};
 
-保健室より`;
+/* 保存 */
+const store={get(k,d){try{const v=localStorage.getItem("hdc-"+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem("hdc-"+k,JSON.stringify(v));}catch(e){}}};
+let OVR=store.get("ovr",{});   // 読みの手直し：{漢字の並び: よみ}
 
-/* setup */
+/* 初期化 */
 for(let m=1;m<=12;m++){const o=document.createElement("option");o.value=m;o.textContent=m+"月号";$("month").appendChild(o);}
-$("month").value=6;
 BLOCKS.filter(b=>D.regional.some(r=>r.block===b)).forEach(b=>{const o=document.createElement("option");o.value=b;o.textContent=b;$("block").appendChild(o);});
-$("n-issues").textContent=D.n_issues.toLocaleString();$("n-issues2").textContent=D.n_issues.toLocaleString();
-$("draft").value=SAMPLE;
-document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
-  document.querySelectorAll("[data-pane]").forEach(p=>p.hidden=p.dataset.pane!==b.dataset.tab);}));
-$("clear").addEventListener("click",()=>{$("draft").value="";$("sample-note").hidden=true;run();$("draft").focus();});
-$("sample").addEventListener("click",()=>{$("draft").value=SAMPLE;$("sample-note").hidden=false;run();});
-$("draft").addEventListener("input",()=>{$("sample-note").hidden=$("draft").value===SAMPLE?false:true;schedule();});
-["month","grade","block"].forEach(id=>$(id).addEventListener("change",run));
-try{const s=localStorage.getItem("hd-draft");if(s){$("draft").value=s;$("sample-note").hidden=s===SAMPLE?false:true;}}catch(e){}
-let tmr;function schedule(){clearTimeout(tmr);tmr=setTimeout(run,250);}
+$("n-issues").textContent=D.n_issues.toLocaleString();
+const saved=store.get("doc",null);
+const doc0=saved||SAMPLE;
+$("title").value=doc0.title;$("org").value=doc0.org;$("date").value=doc0.date;$("draft").value=doc0.body;
+const st0=store.get("settings",{month:6,grade:"3",rubymode:"need",block:"",font:"UD デジタル 教科書体 N-R"});
+$("month").value=st0.month;$("grade").value=st0.grade;$("rubymode").value=st0.rubymode;$("block").value=st0.block;$("font").value=st0.font;
+$("sample").onclick=()=>{if(!confirm("いまの原稿を例文に置き換えます。よろしいですか？"))return;$("title").value=SAMPLE.title;$("org").value=SAMPLE.org;$("date").value=SAMPLE.date;$("draft").value=SAMPLE.body;run();};
+$("clear").onclick=()=>{if(!confirm("いまの原稿を消して、新しく書きます。よろしいですか？"))return;const m=$("month").value;$("title").value=`ほけんだより　${m}月号`;$("org").value="";$("date").value="";$("draft").value="";run();$("draft").focus();};
+["title","org","date","draft"].forEach(id=>$(id).addEventListener("input",schedule));
+["month","grade","rubymode","block","font","marks"].forEach(id=>$(id).addEventListener("change",run));
+let tmr;function schedule(){clearTimeout(tmr);tmr=setTimeout(run,300);}
 
-function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+/* 形態素解析（読み） */
+let TOK=null;
+if(window.kuromoji){kuromoji.builder({dicPath:"https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/"}).build((err,t)=>{
+  if(err){$("status").textContent="読みの辞書を読み込めませんでした（読みは一覧で手入力できます）";return;}
+  TOK=t;$("status").textContent="";run();});}
+else $("status").textContent="読みの辞書を読み込めませんでした（読みは一覧で手入力できます）";
 
-function analyse(raw){
-  const text=raw.normalize("NFKC");
-  const body=text.replace(/\s+/g,"");
-  const n=body.length;
-  const kanji=body.match(KANJI_RE)||[];
-  const grade=+$("grade").value;
-  const sents=text.split(/[。！？]+/).map(s=>s.replace(/\s+/g,"")).filter(Boolean);
-  const longS=sents.filter(s=>s.length>60);
-  const tech=D.technical.filter(t=>body.includes(t));
-  const topics={};for(const [k,terms] of Object.entries(D.topics)){const hit=terms.filter(t=>body.includes(t));if(hit.length)topics[k]=hit;}
-  const tgt=grade;
-  const over={};kanji.forEach(c=>{const g=lv(c);if(grade>0&&g>tgt){over[c]=(over[c]||0)+1;}});
-  const jhs=kanji.filter(c=>lv(c)===7).length;
-  const oogShare=kanji.length?kanji.filter(c=>(KG[c]||99)>6).length/kanji.length:0;
-  return {text,body,n,kanji,grade,tgt,jhs,sents,longS,tech,topics,over,
-    kanjiRatio:n?kanji.length/n:0, oog:oogShare, kata:n?(body.match(/[ァ-ヿ]/g)||[]).length/n:0,
-    techPer1k:n?1000*tech.reduce((a,t)=>a+body.split(t).length-1,0)/n:0};
+// 1語を「漢字の並び＋読み」と「かな」に分ける。送りがなを読みの両端から外す
+function align(surface,reading){
+  const parts=surface.match(/[一-鿿㐀-䶿々〆ヶ]+|[^一-鿿㐀-䶿々〆ヶ]+/g)||[];
+  if(!parts.some(p=>isK(p[0])))return [{t:surface}];
+  const rd=reading&&reading!=="*"?kata2hira(reading):"";
+  if(rd){const re=new RegExp("^"+parts.map(p=>isK(p[0])?"(.+?)":kata2hira(p).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("")+"$");
+    const m=rd.match(re);
+    if(m){let k=1;return parts.map(p=>isK(p[0])?{t:p,r:m[k++]}:{t:p});}}
+  // 合わないとき：漢字を含む部分をまとめて1つのルビに
+  return [{t:surface,r:rd||""}];
+}
+// 保健の言葉の読み（一般の辞書が誤りやすいもの・複合語を1語として読ませたいもの）
+const YOMI={"歯垢":"しこう","歯石":"しせき","歯肉":"しにく","歯肉炎":"しにくえん","歯周病":"ししゅうびょう","歯周疾患":"ししゅうしっかん","齲歯":"うし","歯科":"しか","歯科医":"しかい","歯科医院":"しかいいん","歯科検診":"しかけんしん",
+"保健室":"ほけんしつ","保健目標":"ほけんもくひょう","養護教諭":"ようごきょうゆ","健康診断":"けんこうしんだん","健診":"けんしん","内科検診":"ないかけんしん","眼科検診":"がんかけんしん","耳鼻科検診":"じびかけんしん","心電図":"しんでんず","尿検査":"にょうけんさ","受診":"じゅしん","受診報告書":"じゅしんほうこくしょ","治療":"ちりょう",
+"熱中症":"ねっちゅうしょう","水分補給":"すいぶんほきゅう","脱水":"だっすい","感染症":"かんせんしょう","感染性胃腸炎":"かんせんせいいちょうえん","胃腸炎":"いちょうえん","溶連菌":"ようれんきん","溶血性レンサ球菌":"ようけつせいれんさきゅうきん","咽頭結膜熱":"いんとうけつまくねつ","手足口病":"てあしくちびょう","結膜炎":"けつまくえん","伝染性膿痂疹":"でんせんせいのうかしん",
+"水痘":"すいとう","麻疹":"ましん","風疹":"ふうしん","流行性耳下腺炎":"りゅうこうせいじかせんえん","百日咳":"ひゃくにちぜき","咳":"せき","咳エチケット":"せきえちけっと","罹患":"りかん","潜伏期間":"せんぷくきかん","飛沫":"ひまつ","飛沫感染":"ひまつかんせん","接触感染":"せっしょくかんせん","抗体":"こうたい","免疫":"めんえき","既往歴":"きおうれき","処置":"しょち","経過観察":"けいかかんさつ",
+"側彎症":"そくわんしょう","側弯症":"そくわんしょう","屈折異常":"くっせついじょう","近視":"きんし","視力":"しりょく","花粉症":"かふんしょう","嘔吐":"おうと","下痢":"げり","発熱":"はつねつ","頭痛":"ずつう","腹痛":"ふくつう","怪我":"けが","応急手当":"おうきゅうてあて","手洗い":"てあらい","換気":"かんき","睡眠":"すいみん","早寝早起き":"はやねはやおき","朝食":"ちょうしょく","栄養":"えいよう","肥満":"ひまん","思春期":"ししゅんき","体温調節":"たいおんちょうせつ","水筒":"すいとう"};
+const YRE=new RegExp("("+Object.keys(YOMI).sort((a,b)=>b.length-a.length).join("|")+")");
+// 本文の1行 → [{t, r?}]（漢字の並びには推定の読み）
+function segLine(line){
+  if(!line)return [];
+  const out=[];
+  line.split(YRE).forEach((part,i)=>{
+    if(!part)return;
+    if(i%2){align(part,YOMI[part]).forEach(x=>out.push(x));return;}
+    if(!TOK){(part.match(/[一-鿿㐀-䶿々〆ヶ]+|[^一-鿿㐀-䶿々〆ヶ]+/g)||[]).forEach(p=>out.push(isK(p[0])?{t:p,r:""}:{t:p}));return;}
+    TOK.tokenize(part).forEach(w=>align(w.surface_form,w.reading).forEach(x=>out.push(x)));});
+  return out;
 }
 
-function preview(A){
-  // mark technical terms, long sentences, and kanji above grade
-  let html="";const text=A.text;
-  const techRe=A.tech.length?new RegExp("("+A.tech.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")","g"):null;
-  const parts=text.split(/([。！？])/);
-  for(let i=0;i<parts.length;i+=2){
-    const s=parts[i]||"",p=parts[i+1]||"";const isLong=s.replace(/\s+/g,"").length>60;
-    let seg="";let rest=s;
-    const chunks=techRe?rest.split(techRe):[rest];
-    chunks.forEach((c,j)=>{if(techRe&&A.tech.includes(c)){seg+=`<mark class="t">${esc(c)}</mark>`;return;}
-      for(const ch of c){const g=lv(ch);if(/[一-鿿㐀-䶿]/.test(ch)&&A.grade>0&&g>A.tgt){seg+=`<mark class="${g<99?"k":"o"}" title="${lvName(g)}">${esc(ch)}</mark>`;}else seg+=esc(ch);}});
-    html+=isLong?`<mark class="s">${seg}</mark>${esc(p)}`:seg+esc(p);
-  }
-  $("preview").innerHTML=html||'<span class="empty">左に下書きを貼ると、ここに印を付けて表示します。</span>';
+/* 判定 */
+function needRuby(base,mode,grade){
+  if(mode==="none")return false;if(mode==="all")return true;
+  if(grade===0)return false;
+  const lim=grade===7?7:grade;
+  return [...base].some(c=>isK(c)&&lv(c)>lim);
+}
+function analyse(){
+  const grade=+$("grade").value,mode=$("rubymode").value;
+  const title=$("title").value,body=$("draft").value;
+  const lines=body.split("\n");
+  const doc={title:segLine(title),lines:lines.map(l=>({raw:l,hd:/^\s*[■●◆◇□【]/.test(l),seg:segLine(l)}))};
+  const words={};
+  const mark=s=>s.forEach(x=>{if(x.r===undefined)return;x.need=needRuby(x.t,mode,grade);if(OVR[x.t]!==undefined)x.r=OVR[x.t];
+    if(x.need){const w=words[x.t]||(words[x.t]={r:x.r,n:0});w.n++;}});
+  mark(doc.title);doc.lines.forEach(l=>mark(l.seg));
+  const flat=(title+"\n"+body).normalize("NFKC");const bodyN=body.normalize("NFKC").replace(/\s+/g,"");
+  const tech=D.technical.filter(t=>flat.includes(t));
+  const topics={};for(const [k,terms] of Object.entries(D.topics)){if(terms.some(t=>flat.includes(t)))topics[k]=1;}
+  const sents=body.normalize("NFKC").split(/[。！？\n]+/).map(s=>s.trim()).filter(Boolean);
+  const longS=sents.filter(s=>s.replace(/\s+/g,"").length>60);
+  const kanji=bodyN.match(/[一-鿿㐀-䶿]/g)||[];
+  return {grade,mode,doc,words,tech,topics,longS,n:bodyN.length,kanji,
+    kanjiRatio:bodyN.length?kanji.length/bodyN.length:0,oog:kanji.length?kanji.filter(c=>(KG[c]||99)>6).length/kanji.length:0};
 }
 
-function kanjiPane(A){
-  const list=Object.entries(A.over).sort((a,b)=>b[1]-a[1]);
-  const total=A.kanji.length,over=list.reduce((a,[,c])=>a+c,0);
-  if(A.grade===0){$("kanji-summary").innerHTML="保護者向けとして見ています。学年の基準は使わず、専門用語と文の長さだけを示します。";}
-  else{$("kanji-summary").innerHTML=total?`漢字 <b class="num">${total}</b> 字のうち <b class="num">${over}</b> 字（${pct(over/total)}）が${A.grade===7?"常用漢字にない（中学校までに習わない）":A.tgt+"年生までに習わない"}漢字です。子どもが読む前提なら、ルビか言い換えを検討してください。${A.grade===7&&A.jhs?`このほか、中学校で習う漢字が <b class="num">${A.jhs}</b> 字あります（1年生の前半には、まだ習っていないものを含みます）。`:""}`:"漢字はまだありません。";}
-  $("kanji-list").innerHTML=list.length?list.map(([c,n])=>{const g=lv(c);return `<span class="${g<99?"":"o"}" title="${lvName(g)}">${c}<small>${lvTag(g)}×${n}</small></span>`;}).join(""):`<span class="empty">${A.grade===7?"常用漢字にない漢字はありません。":"対象学年より上の漢字はありません。"}</span>`;
-  $("tech-list").innerHTML=A.tech.length?A.tech.map(t=>`<span class="chip">${t}</span>`).join(""):'<span class="empty">一覧にある専門用語は見つかりませんでした。</span>';
+/* 紙面 */
+function renderSeg(seg,A,longSet){
+  let h="";seg.forEach(x=>{
+    if(x.r===undefined){h+=esc(x.t);return;}
+    const show=x.need&&x.r;const cls=x.need&&!x.r?"need":"";
+    h+=show?`<ruby>${esc(x.t)}<rt>${esc(x.r)}</rt></ruby>`:cls?`<span class="${cls}" title="読みを入れてください">${esc(x.t)}</span>`:esc(x.t);});
+  A.tech.forEach(t=>{h=h.split(esc(t)).join(`<span class="tech">${esc(t)}</span>`);});
+  return h;
+}
+function renderSheet(A){
+  const sh=$("sheet");sh.classList.toggle("marks",$("marks").checked);
+  const org=$("org").value,date=$("date").value;
+  let h=`<div class="ttl">${renderSeg(A.doc.title,A)||"&nbsp;"}</div><div class="meta"><span>${esc(date)}</span><span>${esc(org)}</span></div>`;
+  const longs=new Set(A.longS);
+  A.doc.lines.forEach(l=>{
+    if(!l.raw.trim()){h+=`<div class="blank"></div>`;return;}
+    let inner=renderSeg(l.seg,A);
+    if(!l.hd&&A.longS.some(s=>l.raw.normalize("NFKC").includes(s)))inner=`<span class="long">${inner}</span>`;
+    h+=l.hd?`<p class="hd">${inner}</p>`:`<p>${inner}</p>`;});
+  if(!$("draft").value.trim())h+=`<div class="empty">左に本文を書くと、ここに紙面ができます。</div>`;
+  sh.innerHTML=h;
+  $("sheetinfo").textContent=`${A.n.toLocaleString()} 字`;
 }
 
-function meter(label,val,q,fmt,lo,hi,extra){
-  const pos=v=>Math.max(0,Math.min(100,100*(v-lo)/(hi-lo)));
-  const rank=val<q[0]?"全国の下位10%より少ない":val<q[1]?"全国の下位25%あたり":val<=q[3]?"全国の真ん中あたり":val<=q[4]?"全国の上位25%あたり":"全国の上位10%より多い";
-  return `<div class="meter"><div class="top"><span>${label}</span><span><b>${fmt(val)}</b> <span class="note">${rank}</span></span></div>
-  <div class="bar"><div class="iqr" style="left:${pos(q[1])}%;width:${pos(q[3])-pos(q[1])}%"></div><div class="mid" style="left:${pos(q[2])}%"></div><div class="you" style="left:${pos(val)}%"></div></div>
-  <div class="scale"><span>${fmt(lo)}</span><span>中央値 ${fmt(q[2])}</span><span>${fmt(hi)}</span></div>${extra?`<div class="note">${extra}</div>`:""}</div>`;
-}
-function readPane(A){
-  const ty=A.grade===7?"中":"小";const dist=D.dist[ty];const m=+$("month").value;
-  if(!A.n){$("meters").innerHTML='<span class="empty">下書きを貼ると表示します。</span>';$("ruby-note").innerHTML="";return;}
-  let h="";
-  h+=meter("文字数",A.n,dist.char_count,v=>Math.round(v).toLocaleString()+"字",0,2400,`${m}月号の全国の中央値は ${dist.char_by_month[m].toLocaleString()} 字（${ty==="小"?"小学校":"中学校"}）。`);
-  h+=meter("漢字の割合",A.kanjiRatio,dist.kanji_ratio,v=>pct(v),0.15,0.5);
-  if(ty==="小"&&dist.out_of_grade_kanji_ratio)h+=meter("小学校で習わない漢字の割合",A.oog,dist.out_of_grade_kanji_ratio,v=>pct(v,1),0,0.2,"漢字のうち、小6までの配当表にない字の割合。研究では、この値は同じ学校でも号ごとに大きく揺れていました。");
-  h+=meter("カタカナの割合",A.kata,dist.katakana_ratio,v=>pct(v,1),0,0.15);
-  h+=meter("専門用語（千字あたり）",A.techPer1k,dist.technical_term_per_1k,v=>v.toFixed(1),0,10);
-  h+=`<div class="meter"><div class="top"><span>60字を超える文</span><span><b>${A.longS.length}</b> <span class="note">文（全 ${A.sents.length} 文）</span></span></div>${A.longS.length?'<div class="note">「漢字・ルビ」タブで波線を付けています。2つに分けると読みやすくなることが多いです。</div>':""}</div>`;
-  $("meters").innerHTML=h;
-  const rq=dist.ruby_kanji_ratio;
-  $("ruby-note").innerHTML=ty==="小"?`全国の小学校の保健だよりでは、漢字にルビを振る割合が学校によって大きく分かれていました（ほぼ振らない学校から、ほとんどの漢字に振る学校まで。中央値 ${pct(rq[2])}）。研究では、この差は地域の日本語支援の必要性とも関係していませんでした。読み手を決めて、ルビの方針を校内で一度話し合っておくと、号ごとのぶれが減ります。`:"中学校の保健だよりは、ほとんどルビを振っていません。生徒が読む前提なら、未習の漢字には言い換えを検討してください。";
-}
-
-function topicPane(A){
-  const m=+$("month").value;const TM=D.topic_month[m]||{};
-  const found=Object.keys(A.topics);
-  $("topic-found").innerHTML=found.length?found.map(k=>`<span class="chip on" title="${A.topics[k].join("・")}">${NAMES(k)}</span>`).join(""):'<span class="empty">辞書の話題は見つかりませんでした。</span>';
-  const ranked=Object.entries(TM).filter(([k])=>!k.startsWith("構成:")&&k!=="感染症:一般").sort((a,b)=>b[1]-a[1]).slice(0,10);
-  $("topic-month-title").textContent=`${m}月号で、全国の保健だよりがよく書いている話題`;
-  $("topic-table").innerHTML="<tr><th>話題</th><th>書いている号の割合</th><th>この下書き</th></tr>"+ranked.map(([k,v])=>`<tr><td>${NAMES(k)}</td><td class="n">${pct(v)}</td><td>${found.includes(k)?'<span class="pill">あり</span>':'<span class="pill g">なし</span>'}</td></tr>`).join("");
-  const comps=Object.entries(TM).filter(([k])=>k.startsWith("構成:")).sort((a,b)=>b[1]-a[1]);
-  $("comp-table").innerHTML="<tr><th>要素</th><th>入れている号の割合</th><th>この下書き</th></tr>"+comps.map(([k,v])=>`<tr><td>${NAMES(k)}</td><td class="n">${pct(v)}</td><td>${found.includes(k)?'<span class="pill">あり</span>':'<span class="pill g">なし</span>'}</td></tr>`).join("");
-  const missTop=ranked.filter(([k,v])=>v>=0.3&&!found.includes(k)).map(([k])=>NAMES(k));
-  $("topic-summary").innerHTML=missTop.length?`${m}月号では、全国の3割以上の号が「${missTop.join("」「")}」に触れています。載せる必要はありませんが、入れるかどうかを考える材料にしてください。`:`${m}月号によく書かれる話題は、ひととおり扱っています。`;
-}
-
-function seasonPane(){
+/* 確認 */
+function renderChecks(A){
+  const W=Object.entries(A.words).sort((a,b)=>b[1].n-a[1].n);
+  const miss=W.filter(([,w])=>!w.r).length;
+  $("ruby-n").textContent=A.mode==="none"?"振らない":`${W.length} 語${miss?`（読みなし ${miss}）`:""}`;
+  $("ruby-note").textContent=A.mode==="none"?"ルビを振らない設定です。":A.mode==="all"?"すべての漢字に振ります。":A.grade===0?"保護者向けは、ルビを振らない設定と同じです（すべてに振る場合は「すべての漢字」を選んでください）。":`${A.grade===7?"常用漢字にない":$("grade").selectedOptions[0].text+"までに習わない"}漢字を含む言葉に振ります。読みが違うときは直してください。`;
+  const prev=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.base:null;
+  $("rubylist").innerHTML=W.map(([b,w])=>`<div class="r"><span class="base">${esc(b)}</span><input data-base="${esc(b)}" value="${esc(w.r||"")}" class="${w.r?"":"miss"}" aria-label="${esc(b)}の読み"><span class="c">${w.n}回</span></div>`).join("")||`<p class="muted">ルビが要る言葉はありません。</p>`;
+  if(prev){const i=$("rubylist").querySelector(`input[data-base="${CSS.escape(prev)}"]`);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}}
+  $("tech-n").textContent=A.tech.length?A.tech.length+" 語":"";
+  $("tech").innerHTML=A.tech.length?`<p>${A.tech.map(esc).join("、")}</p><p class="muted">子どもや保護者に向けて、短い説明や言い換えを添えると伝わりやすくなります。</p>`:`<p class="muted">一覧にある専門用語は見つかりませんでした。</p>`;
+  $("long-n").textContent=A.longS.length?A.longS.length+" 文":"";
+  $("long").innerHTML=A.longS.length?`<ul>${A.longS.slice(0,4).map(s=>`<li>${esc(s.slice(0,28))}…（${s.replace(/\s+/g,"").length}字）</li>`).join("")}</ul><p class="muted">60字を超える文です。2つに分けると読みやすくなります。</p>`:`<p class="muted">60字を超える文はありません。</p>`;
+  // 今月の話題
   const m=+$("month").value,b=$("block").value;const TM=D.topic_month[m]||{};
-  const keys=["熱中症","感染症:インフルエンザ","感染症:新型コロナ","感染症:感染性胃腸炎","感染症:マイコプラズマ","感染症:手足口病","感染症:ヘルパンギーナ","歯科","視力","睡眠","メディア","食事"];
+  const rows=Object.entries(TM).filter(([k])=>!k.startsWith("構成:")&&k!=="感染症:一般").sort((x,y)=>y[1]-x[1]).slice(0,6);
+  $("topic-h").textContent=`${m}月号で全国の保健だよりがよく書く話題`;
+  $("topics").innerHTML=rows.map(([k,v])=>`<tr><td>${NAMES(k)}</td><td class="n">${pct(v)}</td><td class="y">${A.topics[k]?'<span class="y-on">書いた</span>':'<span class="y-off">—</span>'}</td></tr>`).join("");
   const reg=b?D.regional.filter(r=>r.block===b):[];
-  $("season-title").textContent=`${m}月号での主な話題${b?`（全国と${b}）`:"（全国）"}`;
-  let h="<tr><th>話題</th><th>全国：この月に書いている号</th>"+(b?`<th>${b}：年間の言及率</th><th>${b}：最多の月</th>`:"")+"</tr>";
-  keys.filter(k=>TM[k]!==undefined).sort((a,c)=>TM[c]-TM[a]).forEach(k=>{const r=reg.find(x=>x.topic===k);
-    h+=`<tr><td>${NAMES(k)}</td><td class="n">${pct(TM[k])}</td>${b?`<td class="n">${r?pct(r.share):"—"}</td><td class="n">${r?r.peak_month+"月":"—"}</td>`:""}</tr>`;});
-  $("season-table").innerHTML=h;
   const fl=reg.find(x=>x.topic==="感染症:インフルエンザ"),hs=reg.find(x=>x.topic==="熱中症");
-  $("season-note").textContent=b&&fl&&hs?`${b}では、インフルエンザの話題は${fl.peak_month}月、熱中症は${hs.peak_month}月が最も多く書かれていました。流行が始まる前の号で予防を書くと先回りになります。`:"地方を選ぶと、その地方での話題の多い月を表示します（地方の気候で時期がずれます。例：北海道は熱中症が6月に最多）。";
+  $("topic-note").textContent=(b&&fl&&hs?`${b}では、熱中症は${hs.peak_month}月、インフルエンザは${fl.peak_month}月に最も多く書かれています。`:"")+"割合は、その月の号のうち、その話題に触れた号の割合。全部を載せる必要はありません。";
+  // 分量と漢字
+  const ty=A.grade===7?"中":"小";const dist=D.dist[ty];
+  const where=(v,q)=>v<q[1]?"少なめ":v>q[3]?"多め":"ふつう";
+  let h="";
+  if(A.n){h+=`<p class="lv">文字数 <b>${A.n.toLocaleString()}</b> 字 <span class="muted">（${m}月号の全国の中央値 ${dist.char_by_month[m].toLocaleString()} 字・${where(A.n,dist.char_count)}）</span></p>`;
+    h+=`<p class="lv">漢字の割合 <b>${pct(A.kanjiRatio)}</b> <span class="muted">（全国の半数が ${pct(dist.kanji_ratio[1])}〜${pct(dist.kanji_ratio[3])}・${where(A.kanjiRatio,dist.kanji_ratio)}）</span></p>`;
+    if(ty==="小"&&dist.out_of_grade_kanji_ratio)h+=`<p class="lv">小学校で習わない漢字 <b>${pct(A.oog,1)}</b> <span class="muted">（全国の半数が ${pct(dist.out_of_grade_kanji_ratio[1],1)}〜${pct(dist.out_of_grade_kanji_ratio[3],1)}）</span></p>`;}
+  else h=`<p class="muted">本文を書くと表示します。</p>`;
+  $("levels").innerHTML=h;
 }
+$("rubylist").addEventListener("input",e=>{const i=e.target;if(!i.dataset.base)return;OVR[i.dataset.base]=i.value.trim();store.set("ovr",OVR);schedule();});
 
+let LAST=null;
 function run(){
-  const raw=$("draft").value;try{localStorage.setItem("hd-draft",raw);}catch(e){}
-  const A=analyse(raw);preview(A);kanjiPane(A);readPane(A);topicPane(A);seasonPane();
+  store.set("doc",{title:$("title").value,org:$("org").value,date:$("date").value,body:$("draft").value});
+  store.set("settings",{month:$("month").value,grade:$("grade").value,rubymode:$("rubymode").value,block:$("block").value,font:$("font").value});
+  const A=analyse();LAST=A;renderSheet(A);renderChecks(A);
 }
 run();
+
+/* Word（.docx）の書き出し。ルビは Word のルビ機能（w:ruby）で入れるので、Word 上で直せる */
+const xe=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function wRun(t,sz,bold){return `<w:r><w:rPr>${bold?"<w:b/>":""}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/></w:rPr><w:t xml:space="preserve">${xe(t)}</w:t></w:r>`;}
+function wRuby(t,r,sz,bold){const rs=Math.max(8,Math.round(sz/2));
+  return `<w:r><w:ruby><w:rubyPr><w:rubyAlign w:val="distributeSpace"/><w:hps w:val="${rs}"/><w:hpsRaise w:val="${sz-2}"/><w:hpsBaseText w:val="${sz}"/><w:lid w:val="ja-JP"/></w:rubyPr><w:rt>${wRun(r,rs,false)}</w:rt><w:rubyBase>${wRun(t,sz,bold)}</w:rubyBase></w:ruby></w:r>`;}
+function wSeg(seg,sz,bold){return seg.map(x=>x.r!==undefined&&x.need&&x.r?wRuby(x.t,x.r,sz,bold):wRun(x.t,sz,bold)).join("");}
+function wPara(inner,{jc,before=0,after=0,border}={}){
+  return `<w:p><w:pPr>${border?'<w:pBdr><w:left w:val="single" w:sz="36" w:space="6" w:color="6B8FB3"/></w:pBdr>':""}${border==="bottom"?"":""}<w:spacing w:before="${before}" w:after="${after}"/>${jc?`<w:jc w:val="${jc}"/>`:""}</w:pPr>${inner}</w:p>`;}
+async function exportDocx(){
+  if(!window.JSZip){alert("書き出しの部品を読み込めませんでした。ネットにつながっているか確かめてください。");return;}
+  const A=LAST;const font=$("font").value;
+  let body="";
+  body+=`<w:p><w:pPr><w:pBdr><w:bottom w:val="double" w:sz="6" w:space="4" w:color="444444"/></w:pBdr><w:jc w:val="center"/><w:spacing w:after="60"/></w:pPr>${wSeg(A.doc.title,40,true)}</w:p>`;
+  const org=$("org").value,date=$("date").value;
+  if(org||date)body+=`<w:p><w:pPr><w:tabs><w:tab w:val="right" w:pos="9638"/></w:tabs><w:spacing w:after="200"/></w:pPr>${wRun(date,20)}<w:r><w:tab/></w:r>${wRun(org,20)}</w:p>`;
+  A.doc.lines.forEach(l=>{
+    if(!l.raw.trim()){body+=wPara("");return;}
+    body+=l.hd?wPara(wSeg(l.seg,26,true),{before:120,after:40,border:true}):wPara(wSeg(l.seg,22,false));});
+  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+  const docXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${xe(font)}" w:hAnsi="${xe(font)}" w:eastAsia="${xe(font)}" w:cs="${xe(font)}"/><w:kern w:val="2"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="en-US" w:eastAsia="ja-JP"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:line="300" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="a"><w:name w:val="Normal"/></w:style></w:styles>`;
+  const z=new JSZip();
+  z.file("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`);
+  z.file("_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+  z.file("word/_rels/document.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
+  z.file("word/document.xml",docXml);z.file("word/styles.xml",styles);
+  const blob=await z.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const name=($("title").value.replace(/[\\/:*?"<>|\s　]+/g,"_")||"ほけんだより")+".docx";
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  window.__lastDocx=docXml;
+}
+$("docx").onclick=exportDocx;
 </script>
