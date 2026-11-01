@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>保健だより作成チェック</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -202,7 +207,10 @@ let tmr;function schedule(){clearTimeout(tmr);tmr=setTimeout(run,300);}
 
 /* 形態素解析（読み） */
 let TOK=null;
-if(window.kuromoji){kuromoji.builder({dicPath:"https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/"}).build((err,t)=>{
+// 辞書は公開ページと同じ場所の dict/ に置く。kuromoji は dicPath の "https://" を "https:/" に詰めてしまい、
+// https のページでは別の CDN を指定しても同じサイトの存在しないパスを読みにいって止まる（404 のまま無限ループ）
+const DIC=location.protocol==="file:"?"https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/":"dict/";
+if(window.kuromoji){kuromoji.builder({dicPath:DIC}).build((err,t)=>{
   if(err){$("status").textContent="読みの辞書を読み込めませんでした（読みは一覧で手入力できます）";return;}
   TOK=t;$("status").textContent="";run();});}
 else $("status").textContent="読みの辞書を読み込めませんでした（読みは一覧で手入力できます）";
@@ -362,3 +370,5 @@ async function exportDocx(){
 }
 $("docx").onclick=exportDocx;
 </script>
+
+</html>
