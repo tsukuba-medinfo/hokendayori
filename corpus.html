@@ -107,11 +107,11 @@ footer{padding-top:20px;font-size:12px;color:var(--muted);display:grid;gap:4px;b
 
 <div class="page">
 <aside class="toc"><div class="ttl">目次</div><nav id="tabs" aria-label="目次">
-  <a href="#top">概要</a><a href="#why">問い</a><a href="#data">データ</a><a href="#rq1">RQ1 分布</a><a href="#rq2">RQ2 ばらつき</a><a href="#robust">頑健性</a><a href="#need">日本語支援</a><a href="#region">土地柄</a><a href="#rq3">RQ3 流行</a><a href="#valid">検証</a><a href="#discuss">考察・限界</a>
+  <a href="#top">概要</a><a href="#why">問い</a><a href="#data">データ</a><a href="#rq1">RQ1 分布</a><a href="#rq2">RQ2 ばらつき</a><a href="#robust">頑健性</a><a href="#need">日本語支援</a><a href="#region">土地柄</a><a href="#rq3">RQ3 流行</a><a href="#valid">検証</a>
 </nav></aside>
 <main>
 <header class="doc" id="top">
-  <div class="meta">ゼミ資料　保健だよりコーパス研究（中間報告）　筑波大学 医学学位プログラム</div>
+  <div class="meta">保健だよりコーパス研究　筑波大学 医学学位プログラム　JMeL2026にて発表</div>
   <h1>保健だよりの日本語は、どこでばらつくのか</h1>
   <p class="lede">全国の学校がウェブに公開している保健だよりを集め、読みやすさに関わる指標のばらつきが「自治体・学校・年度・号」のどこで生まれているかを分解した。</p>
 </header>
@@ -313,36 +313,12 @@ footer{padding-top:20px;font-size:12px;color:var(--muted);display:grid;gap:4px;b
   </div>
 </section>
 
-<section class="block" id="discuss">
-  <h2>ばらつきの量は、必要な支援の量</h2>
-  <div class="two">
-    <div class="panel">
-      <h3>考察</h3>
-      <ul class="plain">
-        <li>同じ書き手が毎月一人で作り、誰も確認しない構造では、号ごとの揺れがそのまま紙面に出る。</li>
-        <li>ルビの有無が学校の慣行として固定され、地域のニーズにも応じていないのは、校内で見直す機会がないことと整合する。</li>
-        <li>支援は<b>作成の時点</b>に届く形が要る：配当外漢字やルビ不足を作成時に自動で示す確認。</li>
-        <li>流行の後追いは発行頻度の帰結。地域の流行情報を早く届ける仕組みと組み合わせると先回りできる。</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>限界</h3>
-      <ul class="plain">
-        <li>対象は保健だよりを公開していた学校だけ（サイトを確認できた学校の約13%）。収集の対象は全国の公立小中（約2.7万校）の約4分の1で、無作為の標本ではない。</li>
-        <li>Google Sites や JavaScript 必須の基盤、robots.txt で拒否された自治体は含まない。</li>
-        <li>測ったのは文字の難しさと配慮のみ。文の構造・レイアウト・図は扱っていない。</li>
-        <li>画像だけの PDF は除外。流行データは2023年以降。</li>
-        <li>話題判定は語彙の照合。著者による無作為100件の目視確認を実施中。</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
 
 <footer>
   <div>集計値のみを示し、学校を同定できる値は含まない。原文は著作権法第30条の4に基づく情報解析にのみ用い、再配布しない。</div>
   <div>出典：各学校の公開文書（収集 <span class="num" id="f-col"></span>件）／文部科学省「日本語指導が必要な児童生徒の受入状況等に関する調査」（令和5年度）／学校基本調査／統計センター SSDSE-A／国立健康危機管理研究機構 IDWR 速報データ。</div>
-  <div>筑波大学 医学学位プログラム ｜ JMeL 2026 発表に向けた中間報告</div>
+  <div>筑波大学 医学学位プログラム ｜ JMeL2026にて発表</div>
 </footer>
 </main>
 </div>
@@ -613,7 +589,7 @@ seg("gkind",drawGroups);
 /* tabs highlight */
 const links=[...document.querySelectorAll("#tabs a")];
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id));}});},{rootMargin:"0px 0px -70% 0px"});
-["top","why","data","rq1","rq2","robust","need","region","rq3","valid","discuss"].forEach(id=>{const n=document.getElementById(id);if(n)io.observe(n);});
+["top","why","data","rq1","rq2","robust","need","region","rq3","valid"].forEach(id=>{const n=document.getElementById(id);if(n)io.observe(n);});
 
 function drawAll(){drawValid();drawExpl();drawAssoc();drawGroups();regionTopicTable();drawYield();drawHist();drawHeat();drawVar();drawTopVar();drawRob();drawNeed();needTable();drawLag();lagTable();}
 dsel.value="感染症:マイコプラズマ";
