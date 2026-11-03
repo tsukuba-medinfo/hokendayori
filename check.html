@@ -75,14 +75,23 @@ button,select,input,textarea{font:inherit;color:inherit}
 .sheet .empty{color:#999;text-align:center;margin-top:30%}
 
 /* 確認 */
-.checks{display:grid;gap:12px}
-.ck{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:10px 12px;display:grid;gap:6px}
-.ck h2{font-size:13.5px;margin:0;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.ck h2 small{font-weight:400;color:var(--muted);font-size:12px}
+/* 確認：見出しだけでも結果がわかるように、閉じた状態で要点を右に出す。列は画面の高さに収めて、紙面と一緒に止まる */
+.checks{display:grid;gap:6px;align-content:start;position:sticky;top:58px;max-height:calc(100vh - 116px);overflow:auto;padding-right:2px}
+@media (max-width:1240px){.checks{position:static;max-height:none}}
+.ck{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:0 12px}
+.ck[open]{padding-bottom:10px}
+.ck>*+*{margin-top:6px}
+.ck summary{font-size:13.5px;font-weight:700;padding:8px 0;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:baseline;list-style:none}
+.ck summary::-webkit-details-marker{display:none}
+.ck summary span::before{content:"▸";display:inline-block;width:1em;color:var(--faint);font-weight:400;transition:transform .15s}
+.ck[open] summary span::before{transform:rotate(90deg)}
+.ck summary small{font-weight:400;color:var(--muted);font-size:12px;text-align:right;white-space:nowrap}
+.ck summary small b{color:var(--need);font-weight:700}
+.lk{border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer;padding:0;text-decoration:underline}
 .ck p,.ck li{font-size:13px}
 .ck ul{margin:0;padding-left:1.1em;display:grid;gap:2px}
 .ck .muted{color:var(--muted)}
-.rubylist{display:grid;gap:3px;max-height:280px;overflow:auto}
+.rubylist{display:grid;gap:3px;max-height:240px;overflow:auto}
 .rubylist .r{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:13px}
 .rubylist .base{font-family:var(--paperfont);font-size:15px;min-width:3em}
 .rubylist input{width:100%;padding:2px 6px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:#262626;font-size:13px}
@@ -148,22 +157,22 @@ ul.links a{color:inherit}
   </section>
 
   <aside class="checks" aria-label="確認">
-    <div class="colh"><span>確認</span></div>
-    <div class="ck"><h2>ルビ <small id="ruby-n"></small></h2>
+    <div class="colh"><span>確認</span><span>見出しを押すと開きます</span></div>
+    <details class="ck" data-k="ruby" open><summary><span>ルビ</span><small id="ruby-n"></small></summary>
       <p class="muted" id="ruby-note"></p>
       <div class="rubylist" id="rubylist"></div>
-    </div>
-    <div class="ck"><h2>説明を添えたい言葉 <small id="tech-n"></small></h2><div id="tech"></div></div>
-    <div class="ck"><h2>長い文 <small id="long-n"></small></h2><div id="long"></div></div>
-    <div class="ck"><h2 id="topic-h">今月よく書かれる話題</h2><table class="tp" id="topics"></table><p class="muted" id="topic-note" style="font-size:12px"></p></div>
-    <div class="ck"><h2>最近の感染症</h2>
+    </details>
+    <details class="ck" data-k="tech"><summary><span>説明を添えたい言葉</span><small id="tech-n"></small></summary><div id="tech"></div></details>
+    <details class="ck" data-k="long"><summary><span>長い文</span><small id="long-n"></small></summary><div id="long"></div></details>
+    <details class="ck" data-k="topic"><summary><span id="topic-h">今月よく書かれる話題</span><small id="topic-s"></small></summary><table class="tp" id="topics"></table><p class="muted" id="topic-note" style="font-size:12px"></p></details>
+    <details class="ck" data-k="lv"><summary><span>分量と漢字</span><small id="lv-s"></small></summary><div id="levels"></div></details>
+    <details class="ck" data-k="inf"><summary><span>最近の感染症</span><small id="inf-s"></small></summary>
       <p class="muted" id="inf-wk" style="font-size:12px;margin:0 0 4px"></p>
       <label class="muted" style="font-size:13px">都道府県 <select id="pref"><option value="">全国（47都道府県の平均）</option></select></label>
       <table class="tp" id="inf"></table>
       <p class="muted" id="inf-note" style="font-size:12px"></p>
       <ul class="links" id="inf-links"></ul>
-    </div>
-    <div class="ck"><h2>分量と漢字</h2><div id="levels"></div></div>
+    </details>
   </aside>
 </div>
 
@@ -468,14 +477,15 @@ function renderChecks(A){
   const prev=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.base:null;
   $("rubylist").innerHTML=W.map(([b,w])=>`<div class="r"><span class="base">${esc(b)}</span><input data-base="${esc(b)}" value="${esc(w.r||"")}" class="${w.r?"":"miss"}" aria-label="${esc(b)}の読み"><span class="c">${w.n}回</span></div>`).join("")||`<p class="muted">ルビが要る言葉はありません。</p>`;
   if(prev){const i=$("rubylist").querySelector(`input[data-base="${CSS.escape(prev)}"]`);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}}
-  $("tech-n").textContent=A.tech.length?A.tech.length+" 語":"";
+  $("tech-n").textContent=A.tech.length?A.tech.length+" 語":"なし";
   $("tech").innerHTML=A.tech.length?`<p>${A.tech.map(esc).join("、")}</p><p class="muted">子どもや保護者に向けて、短い説明や言い換えを添えると伝わりやすくなります。</p>`:`<p class="muted">一覧にある専門用語は見つかりませんでした。</p>`;
-  $("long-n").textContent=A.longS.length?A.longS.length+" 文":"";
+  $("long-n").textContent=A.longS.length?A.longS.length+" 文":"なし";
   $("long").innerHTML=A.longS.length?`<ul>${A.longS.slice(0,4).map(s=>`<li>${esc(s.slice(0,28))}…（${s.replace(/\s+/g,"").length}字）</li>`).join("")}</ul><p class="muted">60字を超える文です。2つに分けると読みやすくなります。</p>`:`<p class="muted">60字を超える文はありません。</p>`;
   // 今月の話題
   const m=+$("month").value,b=$("block").value;const TM=D.topic_month[m]||{};
   const rows=Object.entries(TM).filter(([k])=>!k.startsWith("構成:")&&k!=="感染症:一般").sort((x,y)=>y[1]-x[1]).slice(0,6);
-  $("topic-h").textContent=`${m}月号で全国の保健だよりがよく書く話題`;
+  $("topic-h").textContent=`${m}月号でよく書かれる話題`;
+  $("topic-s").textContent=`${rows.filter(([k])=>A.topics[k]).length}/${rows.length} 書いた`;
   $("topics").innerHTML=rows.map(([k,v])=>`<tr><td>${NAMES(k)}</td><td class="n">${pct(v)}</td><td class="y">${A.topics[k]?'<span class="y-on">書いた</span>':'<span class="y-off">—</span>'}</td></tr>`).join("");
   const reg=b?D.regional.filter(r=>r.block===b):[];
   const fl=reg.find(x=>x.topic==="感染症:インフルエンザ"),hs=reg.find(x=>x.topic==="熱中症");
@@ -490,6 +500,7 @@ function renderChecks(A){
     if(ty==="小"&&dist.out_of_grade_kanji_ratio)h+=`<p class="lv">小学校で習わない漢字 <b>${pct(A.oog,1)}</b> <span class="muted">（全国の半数が ${pct(dist.out_of_grade_kanji_ratio[1],1)}〜${pct(dist.out_of_grade_kanji_ratio[3],1)}）</span></p>`;}
   else h=`<p class="muted">本文を書くと表示します。</p>`;
   $("levels").innerHTML=h;
+  $("lv-s").textContent=A.n?`${A.n.toLocaleString()}字・${where(A.n,dist.char_count)}`:"";
 }
 // 最近の感染症：国の週報（IDWR 速報）の定点当たり報告数。直近2週の平均を、前の年までの同じ2週と比べる。
 // 例年の1.5倍以上に印（全国の号での検証で、印をつけた感染症はコーパスの目安より少し多く書かれていた）
@@ -506,8 +517,10 @@ function renderInf(A){
   $("inf-wk").textContent=`国の週報 ${I.year}年第${I.week}週まで（${md(I.from)}〜${md(I.to)}の平均）`;
   const rows=I.diseases.map(dz=>{const [v,b]=val(dz);const hot=v!=null&&b!=null&&v>0&&(v+0.01)>=1.5*(b+0.01);return {dz,v,b,hot};})
     .sort((x,y)=>(y.hot-x.hot)||((y.v||0)-(x.v||0)));
+  const hot=rows.filter(r=>r.hot);
+  $("inf-s").innerHTML=hot.length?`例年より多い <b>${hot.length}</b>`:"例年なみ";
   $("inf").innerHTML=`<tr><th style="text-align:left">感染症</th><th class="n">最近</th><th class="n">例年</th><th></th></tr>`+rows.map(r=>`<tr><td>${r.hot?"<b>":""}${INF_NAME[r.dz]||r.dz}${r.hot?"</b>":""}</td><td class="n">${r.v==null?"—":r.v.toFixed(2)}</td><td class="n">${r.b==null?"—":r.b.toFixed(2)}</td><td class="y">${r.hot?(A.topics[INF_TOPIC[r.dz]]?'<span class="y-on">書いた</span>':'<span class="y-off">多い</span>'):""}</td></tr>`).join("");
-  $("inf-note").textContent=`数字は定点医療機関1か所あたりの1週間の報告数。例年は ${I.base_years[0]}〜${I.base_years.at(-1)}年の同じ週の平均。太字は例年の1.5倍以上（「多い」はまだ原稿にない、「書いた」は原稿にある）。国の週報は2週間ほど遅れて公表されます。全国の号で確かめたところ、印のついた感染症はふだんより少し多く書かれていましたが、差は数ポイントです。今月の目安を補う参考にしてください。`;
+  $("inf-note").textContent=`定点1か所あたりの1週間の報告数。例年は${I.base_years[0]}〜${I.base_years.at(-1)}年の同じ週。太字は例年の1.5倍以上。国の週報は2週間ほど遅れて出ます。今月の話題の目安を補う参考に。`;
   const base="https://id-info.jihs.go.jp/surveillance/idwr/provisional/";
   $("inf-links").innerHTML=[[`${base}${I.year}/${String(I.week).padStart(2,"0")}/index.html`,`IDWR 速報データ ${I.year}年第${I.week}週（国立健康危機管理研究機構）`],
     ["https://id-info.jihs.go.jp/surveillance/idwr/","感染症発生動向調査週報（最新の週はこちら）"],
@@ -517,6 +530,12 @@ function renderInf(A){
 }
 $("rubylist").addEventListener("input",e=>{const i=e.target;if(!i.dataset.base)return;OVR[i.dataset.base]=i.value.trim();store.set("ovr",OVR);schedule();});
 
+// 確認の欄は1つずつ開く（ほかは閉じて、要点だけ見出しの右に出す）。すべての見出しが画面に収まるように。開いた欄は覚えておく
+const CKS=[...document.querySelectorAll("details.ck")];
+const OPEN=store.get("open1","ruby");
+CKS.forEach(d=>{d.open=d.dataset.k===OPEN;
+  d.addEventListener("toggle",()=>{if(d.open){CKS.forEach(x=>{if(x!==d)x.open=false;});store.set("open1",d.dataset.k);}
+    else if(!CKS.some(x=>x.open))store.set("open1","");});});
 let LAST=null;
 function run(){
   store.set("doc",{title:$("title").value,org:$("org").value,date:$("date").value,body:$("draft").value});
