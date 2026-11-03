@@ -355,7 +355,8 @@ BLOCKS.filter(b=>D.regional.some(r=>r.block===b)).forEach(b=>{const o=document.c
 $("n-issues").textContent=D.n_issues.toLocaleString();
 const saved=store.get("doc",null);
 const CUR=NOW.getMonth()+1;   // 発行月は、開いた日の月から始める
-const doc0=saved||sampleDoc(CUR);
+// 保存された原稿が例文のまま（手を入れていない）なら、開いた月の例文にする
+const doc0=saved&&!Object.values(SAMPLES).includes(saved.body)?saved:sampleDoc(CUR);
 $("title").value=doc0.title;$("org").value=doc0.org;$("date").value=doc0.date;$("draft").value=doc0.body;
 const st0=store.get("settings",{month:6,grade:"3",rubymode:"need",block:"",font:"UD デジタル 教科書体 N-R"});
 $("month").value=CUR;$("grade").value=st0.grade;$("rubymode").value=st0.rubymode;$("block").value=st0.block;$("font").value=st0.font;
